@@ -5,23 +5,24 @@ export function startMemberCountJob(client: Client): NodeJS.Timeout {
   const CHANNEL_ID = "1454473598973509697";
   const GUILD_ID = "1452263053180534806";
 
-  return setInterval(
-    async () => {
-      try {
-        const guild = client.guilds.cache.get(GUILD_ID);
-        if (!guild) return;
+  console.log("Starting member count job...");
 
-        const channel = guild.channels.cache.get(CHANNEL_ID);
-        if (!channel || !channel.isVoiceBased()) return;
+  return setInterval(async () => {
+    try {
+      console.log("Updating member count...");
 
-        const { total: memberCount } = await getMemberStatus(guild);
+      const guild = client.guilds.cache.get(GUILD_ID);
+      if (!guild) return;
 
-        await channel.setName(`Member: ${memberCount}`);
-        console.log(`Updated member count in ${channel.name}`);
-      } catch (error) {
-        console.error(`Error updating member count: ${error}`);
-      }
-    },
-    60 * 60 * 1000,
-  );
+      const channel = guild.channels.cache.get(CHANNEL_ID);
+      if (!channel || !channel.isVoiceBased()) return;
+
+      const { humans: memberCount } = await getMemberStatus(guild);
+
+      await channel.setName(`Member: ${memberCount}`);
+      console.log(`Updated member count in ${channel.name}`);
+    } catch (error) {
+      console.error(`Error updating member count: ${error}`);
+    }
+  }, 60 * 1000);
 }
