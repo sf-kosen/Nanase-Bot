@@ -1,7 +1,7 @@
 import { CommandInteraction, MessageFlags } from "discord.js";
 import { Command } from "../types/command";
 
-module.exports = {
+export default {
     data: {
         name: "ping",
         flags: MessageFlags.Ephemeral,
