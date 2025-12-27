@@ -31,7 +31,7 @@ const commandFiles = fs
   .readdirSync(`${BASE_DIR}/commands`)
   .filter((file) => file.endsWith(FILE_TYPE));
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`) as Command;
+  const command = require(`./commands/${file}`).default as Command;
   console.warn(`  Load: ${command.data.name}`);
   commands[command.data.name] = command;
 }
@@ -49,7 +49,7 @@ for (const folder of folders) {
 
   for (const file of actionFiles) {
     const path = `./handlers/${folder}/${file}`;
-    const action = require(path) as Action<any>;
+    const action = require(path).default as Action<any>;
     console.warn(`    Load: ${action.data.actionName}`);
 
     actions[folder][action.data.actionName] = action;
