@@ -86,9 +86,7 @@ export default {
             const button = createButton({
                 label: label,
                 customId: {
-                    data: {
-                        action: "ticket-open",
-                    },
+                    action: "ticket-open",
                     value: {
                         category: category?.id,
                     }
