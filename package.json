@@ -6,7 +6,9 @@
   "author": "",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node -r tsconfig-paths/register ./build/index.js"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",

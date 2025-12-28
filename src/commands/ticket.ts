@@ -4,11 +4,10 @@ import { Command } from "../types/command";
 import botConfig from "../../bot.config";
 import { ActionRowBuilder } from "discord.js";
 
-export default {
+module.exports = {
     data: {
         name: "ticket",
         description: "チケットボードを作成します",
-        flags: MessageFlags.Ephemeral,
         defer: true,
 
         options: [
@@ -45,14 +44,12 @@ export default {
         const label = interaction.options.getString("label") || "チケットを作成";
         const title = interaction.options.getString("title") || "チケットボード";
         const description = interaction.options.getString("description") || "以下のボタンを押してチケットを作成してください。";
-        const buttonStyleInput = interaction.options.getString("button_style") || "Primary";
 
         if (!channel) {
             const embed = new EmbedBuilder()
                 .setTitle("エラー")
                 .setDescription("このコマンドはチャンネル内で実行してください。")
                 .setColor(Colors.Red);
-
 
             await interaction.followUp({ embeds: [embed] });
             return;
@@ -61,6 +58,16 @@ export default {
         // 認証関連をここに実装。実行できる人は限られる想定
 
         try {
+            const moderatorId = botConfig.role.moderatorId;
+            const moderator = interaction.guild?.roles.cache.get(moderatorId);
+            if (!moderator) {
+                const embed = new EmbedBuilder()
+                    .setTitle("エラー")
+                    .setDescription("モデレーターロールが見つかりません。設定を確認してください。")
+                    .setColor(Colors.Red);
+                await interaction.followUp({ embeds: [embed] });
+                return;
+            }
             const category = await interaction.guild?.channels.create({
                 name,
                 type: ChannelType.GuildCategory,
@@ -70,11 +77,18 @@ export default {
                         deny: ["ViewChannel"]
                     },
                     {
-                        id: botConfig.role.moderatorId,
+                        id: moderator,
                         allow: ["ViewChannel", "ManageChannels", "ManageMessages"]
                     }
                 ]
             });
+            const tmp = await interaction.guild?.channels.create({
+                name: "ticket-board",
+                type: ChannelType.GuildText,
+                parent: category?.id,
+            });
+            await tmp?.send(`<@&${moderatorId}>`);
+            await tmp?.setTopic("チケット作成用チャンネル");
 
             const button = createButton({
                 label: label,

@@ -4,9 +4,9 @@
 import { ButtonInteraction, MessageFlags, EmbedBuilder, Colors } from "discord.js";
 import { Action } from "../../types/action";
 
-export default {
+module.exports = {
     data: {
-        actionName: "ticket",
+        action: "ticket",
         flags: MessageFlags.Ephemeral
     },
 
