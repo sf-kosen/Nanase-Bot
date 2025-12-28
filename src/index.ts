@@ -22,7 +22,7 @@ console.log("Fetching command...");
 const commandFiles = fs.readdirSync(`${BASE_DIR}/commands`).filter((file) => file.endsWith(FILE_TYPE));
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`) as Command;
-    console.warn(`  Load: ${command.data.name}`);
+    console.log(`  Load: ${command.data.name}`);
     commands[command.data.name] = command;
 }
 console.log("End load command");
@@ -37,10 +37,12 @@ for (const folder of folders) {
 
     for (const file of actionFiles) {
         const path = `./handlers/${folder}/${file}`;
+        console.log(`    Loading file: ${path}`);
         const action = require(path) as Action<any>;
-        console.warn(`    Load: ${action.data.actionName}`);
+        console.log(action)
+        console.warn(`    Load: ${action.data.action}`);
 
-        actions[folder][action.data.actionName] = action;
+        actions[folder][action.data.action] = action;
     }
 
     console.log(`  End load ${folder} handlers`);
@@ -59,10 +61,7 @@ client.once("ready", async () => {
     console.log(`Logged in as ${client.user?.tag}`);
 
     // Registering commands
-    const data: Record<string, any>[] = [
-        { name: "change-mode", description: "[Admin Only] Enable or disable development mode", options: [] }
-    ];
-
+    const data: Record<string, any>[] = new Array();
     for (const commandName in commands) {
         console.warn(`  Registering command: ${commandName}`);
         data.push(commands[commandName].data);
