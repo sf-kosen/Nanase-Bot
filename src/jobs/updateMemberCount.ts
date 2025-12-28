@@ -20,7 +20,7 @@ export function startMemberCountJob(client: Client): NodeJS.Timeout {
 
         const { humans: memberCount } = await getMemberStatus(guild);
 
-        await channel.setName(`学生: ${memberCount}人`);
+        await channel.setName(`学生数: ${memberCount}`);
         console.log(`Updated member count in ${channel.name}`);
       } catch (error) {
         console.error(`Error updating member count: ${error}`);
