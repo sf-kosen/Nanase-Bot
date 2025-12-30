@@ -7,19 +7,28 @@ const handleVcJoin = (async (oldState: VoiceState, newState: VoiceState) => {
     const channelId = newState.channel.id;
     if (channelId !== botConfig.voice.customChannelId) return;
 
-    const channel = await newState.guild.channels.create({
-        name : `🔊｜${newState.member?.user.username}の部屋`,
-        type: ChannelType.GuildVoice,
-        parent: newState.channel.parent,
-        permissionOverwrites: [
-            {
-                id: newState.member?.user.id || "",
-                allow: [PermissionFlagsBits.Connect, PermissionFlagsBits.Speak, PermissionFlagsBits.ViewChannel, PermissionFlagsBits.ManageChannels]
-            }
-        ]
-    });
+    try {
+        const channel = await newState.guild.channels.create({
+            name: `🔊｜${newState.member?.user.username}の部屋`,
+            type: ChannelType.GuildVoice,
+            parent: newState.channel.parentId ?? undefined,
+            permissionOverwrites: [
+                {
+                    id: newState.member?.id || newState.member?.user.id || "",
+                    allow: [
+                        PermissionFlagsBits.Connect,
+                        PermissionFlagsBits.Speak,
+                        PermissionFlagsBits.ViewChannel,
+                        PermissionFlagsBits.ManageChannels,
+                    ],
+                },
+            ],
+        });
 
-    await newState.member?.voice.setChannel(channel);
+        await newState.member?.voice.setChannel(channel);
+    } catch (error) {
+        console.error("vc-join: チャンネル作成に失敗しました:", error);
+    }
 });
 
 export { handleVcJoin };

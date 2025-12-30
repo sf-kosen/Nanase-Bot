@@ -8,8 +8,14 @@ const handleVcLeave = (async (oldState: VoiceState, newState: VoiceState) => {
     if (channel.id === botConfig.voice.customChannelId) return;
     if (botConfig.voice.protectChannelIds.includes(channel.id)) return;
 
+    console.log(`Voice channel ${channel.id} is empty. Deleting...`);
+
     if (channel.members.size === 0) {
-        await channel.delete();
+        try {
+            await channel.delete();
+        } catch (error) {
+            console.error("vc-leave: チャンネル削除に失敗しました:", error);
+        }
     }
 });
 

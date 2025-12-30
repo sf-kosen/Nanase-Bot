@@ -69,7 +69,7 @@ const client = new Client({
   intents: Object.values(GatewayIntentBits) as GatewayIntentBits[],
 });
 
-client.once("ready", async () => {
+client.once("clientReady", async () => {
   console.log(`Logged in as ${client.user?.tag}`);
 
   // Registering commands
