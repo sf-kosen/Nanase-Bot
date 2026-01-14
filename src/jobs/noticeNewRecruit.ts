@@ -6,14 +6,6 @@ export default async function noticeNewRecruit(
 ) {
   const name = thread.name;
 
-  const groupType = name.includes("部")
-    ? "部活"
-    : name.includes("サークル")
-      ? "サークル"
-      : name.includes("同好会")
-        ? "同好会"
-        : "その他";
-
   const channel = client.channels.cache.get("1453750689393283143");
   if (!channel || !channel.isSendable()) return;
 
@@ -28,10 +20,6 @@ export default async function noticeNewRecruit(
       .setTitle(`${thread.name}　が募集開始したよ！`)
       .setDescription(startMsg)
       .addFields(
-        {
-          name: "種別",
-          value: groupType,
-        },
         {
           name: "募集開始日時",
           value: `${thread?.createdAt?.toLocaleString()}`,
