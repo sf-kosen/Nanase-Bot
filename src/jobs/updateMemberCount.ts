@@ -11,12 +11,23 @@ export async function updateMemberCount(client: Client) {
     console.log("Updating member count...");
 
     const guild = client.guilds.cache.get(GUILD_ID);
-    if (!guild) return;
+    if (!guild) {
+      console.error("⚠️ Guild not found");
+      return;
+    }
 
     const channel = guild.channels.cache.get(CHANNEL_ID);
-    if (!channel || !channel.isVoiceBased()) return;
+    if (!channel || !channel.isTextBased()) {
+      console.error("⚠️ Channel not found or not a text channel");
+      return;
+    }
 
     const studentRole = guild.roles.cache.get("1454446371221536788");
+    if (!studentRole) {
+      console.error("⚠️ Student role not found");
+      return;
+    }
+
     const memberCount = studentRole.members.size;
 
     await channel.setName(`学生数: ${memberCount}`);
