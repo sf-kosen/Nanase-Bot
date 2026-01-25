@@ -16,7 +16,8 @@ export async function updateMemberCount(client: Client) {
     const channel = guild.channels.cache.get(CHANNEL_ID);
     if (!channel || !channel.isVoiceBased()) return;
 
-    const { humans: memberCount } = await getMemberStatus(guild);
+    const studentRole = guild.roles.cache.get("1454446371221536788");
+    const memberCount = studentRole.members.size;
 
     await channel.setName(`学生数: ${memberCount}`);
     console.log(`Updated member count in ${channel.name}`);
