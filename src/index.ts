@@ -194,10 +194,12 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
     `   -> hasStudentRole: ${oldMember.roles.cache.has("1454446371221536788")}`,
   );
 
-  //　学生ロールの付与を検知して学生数カウントを更新
+  //　学生ロールの付与、剥奪を検知して学生数カウントを更新
   if (
-    !oldMember.roles.cache.has("1454446371221536788") &&
-    newMember.roles.cache.has("1454446371221536788")
+    (!oldMember.roles.cache.has("1454446371221536788") &&
+      newMember.roles.cache.has("1454446371221536788")) ||
+    (oldMember.roles.cache.has("1454446371221536788") &&
+      !newMember.roles.cache.has("1454446371221536788"))
   ) {
     await updateMemberCount(client);
   }

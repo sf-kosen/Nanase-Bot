@@ -7,10 +7,10 @@ const GUILD_ID = "1452263053180534806";
 let membersFetched = false;
 
 export async function updateMemberCount(client: Client) {
-  console.log("Starting member count job...");
+  console.log("[INFO]  Starting member count job...");
 
   try {
-    console.log("Updating member count...");
+    console.log("[INFO]  Updating member count...");
 
     const guild = client.guilds.cache.get(GUILD_ID);
     if (!guild) {
@@ -38,18 +38,18 @@ export async function updateMemberCount(client: Client) {
     const memberCount = studentRole.members.size;
 
     await channel.setName(`学生数: ${memberCount}`);
-    console.log(`Updated member count in ${channel.name}`);
+    console.log(`[INFO]  Updated member count in ${channel.name}`);
   } catch (error) {
-    console.error(`Error updating member count: ${error}`);
+    console.error(`[ERROR] Updating member count: ${error}`);
   }
 }
 
 export async function firstJob(client: Client) {
-  console.log("[INFO] Starting first job...");
+  console.log("[INFO]  Starting first job...");
 
   const guild = await client.guilds.fetch(GUILD_ID);
   await guild.members.fetch();
   membersFetched = true;
 
-  console.log("First job completed");
+  console.log("[INFO]  First job completed");
 }
