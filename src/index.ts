@@ -11,7 +11,7 @@ import { Action, Actions } from "./types/action";
 import { handleVcJoin } from "./handlers/events/vc/join";
 import { handleVcLeave } from "./handlers/events/vc/leave";
 import { handleVcLogger } from "./handlers/events/vc/logger";
-import { updateMemberCount } from "./jobs/updateMemberCount";
+import { updateMemberCount, firstJob } from "./jobs/updateMemberCount";
 import { loadCommands, loadActions } from "./utils/loader";
 import dotenv from "dotenv";
 import noticeNewRecruit from "./jobs/noticeNewRecruit";
@@ -53,6 +53,7 @@ client.once("clientReady", async () => {
   console.log("Bot is ready!");
   console.log("");
 
+  await firstJob(client);
   await updateMemberCount(client);
 
   return client.user?.setActivity("with Discord.js", { type: 0 });
@@ -150,7 +151,6 @@ client.on("voiceStateUpdate", handleVcLogger);
 client.on("voiceStateUpdate", handleVcJoin);
 client.on("voiceStateUpdate", handleVcLeave);
 
-// メンバー数更新
 client.on("guildMemberAdd", async (member) => {
   const time = Date.now();
   const date = new Date(time);
@@ -169,8 +169,6 @@ client.on("guildMemberAdd", async (member) => {
   } else if (date.getFullYear() == 2026) {
     member.roles.add("1455864840630308925");
   }
-
-  await updateMemberCount(client);
 });
 
 // メンバー数更新
@@ -182,6 +180,28 @@ client.on("threadCreate", async (thread, newlyCreated) => {
   if (thread.parentId === "1454093291325886658") {
     console.log("[noticeNewRecruit] Detect new Recruit");
     noticeNewRecruit(client, thread);
+  }
+});
+
+client.on("guildMemberUpdate", async (oldMember, newMember) => {
+  console.log("[INFO]  Detect guildMemberUpdate");
+  console.log("-> NEW MEMBER");
+  console.log(
+    `   -> hasStudentRole: ${newMember.roles.cache.has("1454446371221536788")}`,
+  );
+  console.log("-> OLD MEMBER");
+  console.log(
+    `   -> hasStudentRole: ${oldMember.roles.cache.has("1454446371221536788")}`,
+  );
+
+  //　学生ロールの付与、剥奪を検知して学生数カウントを更新
+  if (
+    (!oldMember.roles.cache.has("1454446371221536788") &&
+      newMember.roles.cache.has("1454446371221536788")) ||
+    (oldMember.roles.cache.has("1454446371221536788") &&
+      !newMember.roles.cache.has("1454446371221536788"))
+  ) {
+    await updateMemberCount(client);
   }
 });
 
