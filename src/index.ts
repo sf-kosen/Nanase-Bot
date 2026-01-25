@@ -184,6 +184,14 @@ client.on("threadCreate", async (thread, newlyCreated) => {
 
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   console.log("[INFO]  Detect guildMemberUpdate");
+  console.log("-> NEW MEMBER");
+  console.log(
+    `   -> hasStudentRole: ${newMember.roles.cache.has("1454446371221536788")}`,
+  );
+  console.log("-> OLD MEMBER");
+  console.log(
+    `   -> hasStudentRole: ${oldMember.roles.cache.has("1454446371221536788")}`,
+  );
 
   //　学生ロールの付与を検知して学生数カウントを更新
   if (
