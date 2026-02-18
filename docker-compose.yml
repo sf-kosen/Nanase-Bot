@@ -1,0 +1,8 @@
+version: '3.9'
+
+services:
+  mc-server:
+    container_name: docker-mc-server
+    build:
+      dockerfile: ./Dockerfile
+      context: .
