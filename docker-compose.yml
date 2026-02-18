@@ -2,7 +2,9 @@ version: '3.9'
 
 services:
   nanase-bot:
-    container_name: docker-nanase-bot
+    container_name: nanase-bot
+    stdin_open: true
+    tty: true
     build:
       dockerfile: ./Dockerfile
       context: .
