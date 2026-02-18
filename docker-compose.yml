@@ -1,8 +1,8 @@
 version: '3.9'
 
 services:
-  mc-server:
-    container_name: docker-mc-server
+  nanase-bot:
+    container_name: docker-nanase-bot
     build:
       dockerfile: ./Dockerfile
       context: .
