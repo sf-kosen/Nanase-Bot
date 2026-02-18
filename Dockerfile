@@ -2,5 +2,8 @@ FROM node:20
 
 WORKDIR /nanase-bot
 
-CMD ["npm", "install"]
+COPY package*.json ./
+RUN npm install
+
+COPY . .
 CMD ["npm", "run", "dev"]
