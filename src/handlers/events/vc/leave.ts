@@ -15,6 +15,15 @@ const handleVcLeave = (async (oldState: VoiceState, newState: VoiceState) => {
             await channel.delete();
         } catch (error) {
             console.error("vc-leave: チャンネル削除に失敗しました:", error);
+            await fetch(process.env.WEBHOOK_URL || "", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    content: `vc-leave: チャンネル削除に失敗しました: ${error}`,
+                }),
+            });
         }
     }
 });
