@@ -17,6 +17,7 @@ import dotenv from "dotenv";
 import noticeNewRecruit from "./jobs/noticeNewRecruit";
 import addReactionRole from "./handlers/events/reactionRole/addReactionRole";
 import removeReactionRole from "./handlers/events/reactionRole/removeReactionRole";
+import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
 
 dotenv.config({ path: ".env" });
 
@@ -36,6 +37,8 @@ console.log("Registering commands...");
 const client = new Client({
   intents: Object.values(GatewayIntentBits) as GatewayIntentBits[],
 });
+
+let reactionRoleMessage: string = "";
 
 client.once("clientReady", async () => {
   console.log(`Logged in as ${client.user?.tag}`);
@@ -57,6 +60,13 @@ client.once("clientReady", async () => {
 
   await firstJob(client);
   await updateMemberCount(client);
+
+  const result = await checkReactionRoleMessage(client);
+  if (!result) {
+    console.error("This channel can't send msg");
+    return;
+  }
+  reactionRoleMessage = result;
 
   return client.user?.setActivity("with Discord.js", { type: 0 });
 });
@@ -206,8 +216,6 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
     await updateMemberCount(client);
   }
 });
-
-const reactionRoleMessage = process.env["REACTIONROLE_MSG"]!;
 
 client.on("messageReactionAdd", async (reaction, user) => {
   const message = reaction.message;
