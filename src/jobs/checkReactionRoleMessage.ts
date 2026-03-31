@@ -17,6 +17,8 @@ export default async function checkReactionRoleMessage(
 
     if (channel.partial) {
       await channel.fetch();
+    } else {
+      return null;
     }
 
     if (targetMessage) {
