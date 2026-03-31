@@ -15,6 +15,8 @@ import { updateMemberCount, firstJob } from "./jobs/updateMemberCount";
 import { loadCommands, loadActions } from "./utils/loader";
 import dotenv from "dotenv";
 import noticeNewRecruit from "./jobs/noticeNewRecruit";
+import addReactionRole from "./handlers/events/reactionRole/addReactionRole";
+import removeReactionRole from "./handlers/events/reactionRole/removeReactionRole";
 
 dotenv.config({ path: ".env" });
 
@@ -203,6 +205,28 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   ) {
     await updateMemberCount(client);
   }
+});
+
+client.on("messageReactionAdd", async (reaction, user) => {
+  const message = reaction.message;
+  const member = message?.guild?.members.resolve(user.id);
+
+  if (!member) return;
+  if (!reaction.emoji.name) return;
+
+  // ロール付与
+  await addReactionRole(member, reaction.emoji.name);
+});
+
+client.on("messageReactionRemove", async (reaction, user) => {
+  const message = reaction.message;
+  const member = message?.guild?.members.resolve(user.id);
+
+  if (!member) return;
+  if (!reaction.emoji.name) return;
+
+  // ロール剥奪
+  await removeReactionRole(member, reaction.emoji.name);
 });
 
 export { FILE_TYPE, client, commands, actions };
