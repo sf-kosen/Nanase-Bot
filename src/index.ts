@@ -207,6 +207,8 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   }
 });
 
+const reactionRoleMessage = process.env["REACTIONROLE_MSG"]!;
+
 client.on("messageReactionAdd", async (reaction, user) => {
   const message = reaction.message;
   const member = message?.guild?.members.resolve(user.id);
@@ -215,7 +217,9 @@ client.on("messageReactionAdd", async (reaction, user) => {
   if (!reaction.emoji.name) return;
 
   // ロール付与
-  await addReactionRole(member, reaction.emoji.name);
+  if (message.channelId === reactionRoleMessage) {
+    await addReactionRole(member, reaction.emoji.name);
+  }
 });
 
 client.on("messageReactionRemove", async (reaction, user) => {
@@ -226,7 +230,9 @@ client.on("messageReactionRemove", async (reaction, user) => {
   if (!reaction.emoji.name) return;
 
   // ロール剥奪
-  await removeReactionRole(member, reaction.emoji.name);
+  if (message.channelId === reactionRoleMessage) {
+    await removeReactionRole(member, reaction.emoji.name);
+  }
 });
 
 export { FILE_TYPE, client, commands, actions };
