@@ -1,7 +1,7 @@
 import { Client } from "discord.js";
 
 const reactionRoleChannelID = process.env["REACTIONROLE_CHANNELID"]!;
-const botID = process.env["BOTID"]!;
+const botID = process.env["BOT_ID"]!;
 
 export default async function checkReactionRoleMessage(
   client: Client,

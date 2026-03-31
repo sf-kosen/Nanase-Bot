@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const notifierRole = process.env["NOTIFIER_ROLE"]!;
-const VCRole = process.env["VCRole"]!;
+const notifierRole = process.env["NOTIFIER_ROLEID"]!;
+const VCRole = process.env["VC_ROLEID"]!;
 
 export default async function removeReactionRole(
   member: GuildMember,
