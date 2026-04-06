@@ -238,7 +238,7 @@ client.on("messageReactionRemove", async (reaction, user) => {
   if (!reaction.emoji.name) return;
 
   // ロール剥奪
-  if (message.channelId === reactionRoleMessage) {
+  if (message.id === reactionRoleMessage) {
     await removeReactionRole(member, reaction.emoji.name);
   }
 });
