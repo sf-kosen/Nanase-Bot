@@ -9,17 +9,15 @@ export default async function checkReactionRoleMessage(
   const channel = await client.channels.fetch(reactionRoleChannelID);
 
   if (channel && channel.isTextBased()) {
+    if (channel.partial) {
+      await channel.fetch();
+    }
+
     const messages = await channel.messages.fetch({ limit: 10 });
 
     const targetMessage = messages.find((m) => {
       m.author.id === botID && m.content.includes("ロールを付与");
     });
-
-    if (channel.partial) {
-      await channel.fetch();
-    } else {
-      return null;
-    }
 
     if (targetMessage) {
       return targetMessage.id;
