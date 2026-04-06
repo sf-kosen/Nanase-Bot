@@ -221,8 +221,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
   const message = reaction.message;
   const member = message?.guild?.members.resolve(user.id);
 
-  if (!member) return;
-  if (!reaction.emoji.name) return;
+  if (!member || !reaction.emoji.name) return;
 
   // ロール付与
   if (message.id === reactionRoleMessage) {
