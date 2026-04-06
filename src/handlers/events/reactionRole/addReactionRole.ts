@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const notifierRole = process.env["NOTIFIER_ROLEID"]!;
-const VCRole = process.env["VC_ROLEID"]!;
-
 export default async function addReactionRole(
   member: GuildMember,
   emoji: String,
 ): Promise<void> {
+  const notifierRole = process.env["NOTIFIER_ROLE_ID"]!;
+  const VCRole = process.env["VC_ROLE_ID"]!;
+
   if (!member) return;
   if (!emoji) return;
 
