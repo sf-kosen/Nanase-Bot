@@ -10,8 +10,7 @@ export default async function removeReactionRole(
   member: GuildMember,
   emoji: string,
 ): Promise<void> {
-  if (!member) return;
-  if (!emoji) return;
+if (!member || !emoji) return;
 
   if (emoji === "bell") {
     await member.roles.remove(notifierRole);
