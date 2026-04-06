@@ -223,7 +223,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
 
   if (!member || !reaction.emoji.name) return;
 
-  // ロール付与
+  // ReactionRole: ロール付与
   if (message.id === reactionRoleMessage) {
     try {
       await addReactionRole(member, reaction.emoji.identifier);
@@ -240,7 +240,7 @@ client.on("messageReactionRemove", async (reaction, user) => {
   if (!member) return;
   if (!reaction.emoji.name) return;
 
-  // ロール剥奪
+  // ReactionRole: ロール剥奪
   if (message.id === reactionRoleMessage) {
     try {
       await removeReactionRole(member, reaction.emoji.identifier);
