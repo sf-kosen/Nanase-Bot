@@ -5,7 +5,7 @@ dotenv.config();
 
 export default async function addReactionRole(
   member: GuildMember,
-  emoji: String,
+  emoji: string,
 ): Promise<void> {
   const notifierRole = process.env["NOTIFIER_ROLE_ID"]!;
   const VCRole = process.env["VC_ROLE_ID"]!;

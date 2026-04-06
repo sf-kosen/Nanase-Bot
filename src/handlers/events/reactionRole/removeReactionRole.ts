@@ -8,7 +8,7 @@ const VCRole = process.env["VC_ROLEID"]!;
 
 export default async function removeReactionRole(
   member: GuildMember,
-  emoji: String,
+  emoji: string,
 ): Promise<void> {
   if (!member) return;
   if (!emoji) return;

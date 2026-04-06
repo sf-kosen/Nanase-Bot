@@ -225,7 +225,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
   if (!reaction.emoji.name) return;
 
   // ロール付与
-  if (message.channelId === reactionRoleMessage) {
+  if (message.id === reactionRoleMessage) {
     await addReactionRole(member, reaction.emoji.identifier);
   }
 });
