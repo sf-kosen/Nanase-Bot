@@ -117,11 +117,13 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
         const parsed = JSON.parse(customId);
         if (typeof parsed !== "object" || parsed === null || typeof parsed.action !== "string") {
           console.error(`Invalid button customId format: ${customId}`);
+          await interaction.deferUpdate();
           return;
         }
         command = parsed as ButtonCommand;
       } catch {
         console.error(`Failed to parse button customId: ${customId}`);
+        await interaction.deferUpdate();
         return;
       }
       const actionName = command.action;
@@ -149,11 +151,13 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
         const parsed = JSON.parse(customId);
         if (typeof parsed !== "object" || parsed === null || typeof parsed.action !== "string") {
           console.error(`Invalid modal customId format: ${customId}`);
+          await interaction.reply({ content: "invalid request", ephemeral: true });
           return;
         }
         command = parsed as ModalCommand;
       } catch {
         console.error(`Failed to parse modal customId: ${customId}`);
+        await interaction.reply({ content: "invalid request", ephemeral: true });
         return;
       }
       const actionName = command.action;

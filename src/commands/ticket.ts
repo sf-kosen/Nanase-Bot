@@ -128,8 +128,8 @@ export default {
             const actionRow = new ActionRowBuilder<ButtonBuilder>();
             actionRow.addComponents(button);
 
-            await interaction.followUp({ embeds: [embed], components: [actionRow] });
             ticketCooldowns.set(userId, Date.now());
+            await interaction.followUp({ embeds: [embed], components: [actionRow] });
         } catch (error) {
             console.error(error);
             const embed = new EmbedBuilder()
