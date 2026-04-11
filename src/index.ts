@@ -112,7 +112,18 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
     // ボタン
     if (interaction.isButton()) {
       const { customId } = interaction;
-      const command: ButtonCommand = JSON.parse(customId);
+      let command: ButtonCommand;
+      try {
+        const parsed = JSON.parse(customId);
+        if (typeof parsed !== "object" || parsed === null || typeof parsed.action !== "string") {
+          console.error(`Invalid button customId format: ${customId}`);
+          return;
+        }
+        command = parsed as ButtonCommand;
+      } catch {
+        console.error(`Failed to parse button customId: ${customId}`);
+        return;
+      }
       const actionName = command.action;
       const action: Action<ButtonInteraction> | undefined =
         actions.button[actionName];
@@ -133,7 +144,18 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
     // モーダル
     if (interaction.isModalSubmit()) {
       const { customId } = interaction;
-      const command: ModalCommand = JSON.parse(customId);
+      let command: ModalCommand;
+      try {
+        const parsed = JSON.parse(customId);
+        if (typeof parsed !== "object" || parsed === null || typeof parsed.action !== "string") {
+          console.error(`Invalid modal customId format: ${customId}`);
+          return;
+        }
+        command = parsed as ModalCommand;
+      } catch {
+        console.error(`Failed to parse modal customId: ${customId}`);
+        return;
+      }
       const actionName = command.action;
       const action: Action<ModalSubmitInteraction> | undefined =
         actions.modal[actionName];

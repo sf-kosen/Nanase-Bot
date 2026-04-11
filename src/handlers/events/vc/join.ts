@@ -26,7 +26,6 @@ const handleVcJoin = (async (oldState: VoiceState, newState: VoiceState) => {
                         PermissionFlagsBits.Connect,
                         PermissionFlagsBits.Speak,
                         PermissionFlagsBits.ViewChannel,
-                        PermissionFlagsBits.ManageChannels,
                     ],
                 },
             ],

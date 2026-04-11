@@ -1,13 +1,18 @@
-import { EmbedBuilder, MessageFlags, ApplicationCommandOptionType, ChatInputCommandInteraction, ChannelType, Colors, ButtonBuilder, ButtonStyle } from "discord.js";
+import { EmbedBuilder, MessageFlags, ApplicationCommandOptionType, ChatInputCommandInteraction, ChannelType, Colors, ButtonBuilder, ButtonStyle, PermissionFlagsBits } from "discord.js";
 import { createButton } from "../libs/button";
 import { Command } from "../types/command";
 import botConfig from "../../bot.config";
 import { ActionRowBuilder } from "discord.js";
 
+// Rate limit: userId -> last ticket creation timestamp
+const ticketCooldowns: Map<string, number> = new Map();
+const TICKET_COOLDOWN_MS = 60_000; // 60 seconds
+
 export default {
     data: {
         name: "ticket",
         description: "チケットボードを作成します",
+        default_member_permissions: PermissionFlagsBits.ManageChannels.toString(),
         defer: true,
 
         options: [
@@ -55,9 +60,30 @@ export default {
             return;
         }
 
-        // 認証関連をここに実装。実行できる人は限られる想定
-        const roles = interaction.member?.roles;
-        // console.log(roles);
+        // 権限チェック: ManageChannels 権限が必要
+        const memberPermissions = interaction.memberPermissions;
+        if (!memberPermissions?.has(PermissionFlagsBits.ManageChannels)) {
+            const embed = new EmbedBuilder()
+                .setTitle("エラー")
+                .setDescription("このコマンドを実行するにはチャンネル管理権限が必要です。")
+                .setColor(Colors.Red);
+            await interaction.followUp({ embeds: [embed] });
+            return;
+        }
+
+        // レートリミット: 60秒に1回まで
+        const userId = interaction.user.id;
+        const now = Date.now();
+        const lastUsed = ticketCooldowns.get(userId);
+        if (lastUsed && now - lastUsed < TICKET_COOLDOWN_MS) {
+            const remaining = Math.ceil((TICKET_COOLDOWN_MS - (now - lastUsed)) / 1000);
+            const embed = new EmbedBuilder()
+                .setTitle("エラー")
+                .setDescription(`チケットボードの作成は60秒に1回までです。あと${remaining}秒お待ちください。`)
+                .setColor(Colors.Red);
+            await interaction.followUp({ embeds: [embed] });
+            return;
+        }
 
 
         try {
@@ -103,6 +129,7 @@ export default {
             actionRow.addComponents(button);
 
             await interaction.followUp({ embeds: [embed], components: [actionRow] });
+            ticketCooldowns.set(userId, Date.now());
         } catch (error) {
             console.error(error);
             const embed = new EmbedBuilder()
