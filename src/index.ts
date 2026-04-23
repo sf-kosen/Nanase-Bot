@@ -5,6 +5,7 @@ import {
   ButtonInteraction,
   Interaction,
   CacheType,
+  GuildMember,
 } from "discord.js";
 import { Command, ModalCommand, ButtonCommand } from "./types/command";
 import { Action, Actions } from "./types/action";
@@ -48,35 +49,56 @@ const client = new Client({
 
 let reactionRoleMessage: string = "";
 
+async function runSafely(label: string, task: () => Promise<void>) {
+  try {
+    await task();
+  } catch (error) {
+    console.error(`[ERROR] ${label}:`, error);
+  }
+}
+
+async function addRoleSafely(member: GuildMember, roleId: string, label: string) {
+  try {
+    await member.roles.add(roleId);
+  } catch (error) {
+    console.error(`[ERROR] Failed to add ${label} role (${roleId}):`, error);
+  }
+}
+
 client.once("clientReady", async () => {
   console.log(`Logged in as ${client.user?.tag}`);
 
-  // Registering commands
-  const data: Record<string, any>[] = new Array();
+  await runSafely("Registering commands", async () => {
+    const data: Record<string, any>[] = new Array();
 
-  for (const commandName in commands) {
-    console.warn(`  Registering command: ${commandName}`);
-    data.push(commands[commandName].data);
-  }
+    for (const commandName in commands) {
+      console.warn(`  Registering command: ${commandName}`);
+      data.push(commands[commandName].data);
+    }
 
-  await client.application?.commands.set(data as any);
+    await client.application?.commands.set(data as any);
 
-  console.log("Commands registered successfully!");
+    console.log("Commands registered successfully!");
+  });
   console.log("");
   console.log("Bot is ready!");
   console.log("");
 
-  await firstJob(client);
-  await updateMemberCount(client);
+  await runSafely("Initial member fetch", () => firstJob(client));
+  await runSafely("Initial member count update", () => updateMemberCount(client));
 
-  const result = await checkReactionRoleMessage(client);
-  if (!result) {
-    console.error("This channel can't send msg");
-    return;
-  }
-  reactionRoleMessage = result;
+  await runSafely("Reaction role message check", async () => {
+    const result = await checkReactionRoleMessage(client);
+    if (!result) {
+      console.error("This channel can't send msg");
+      return;
+    }
+    reactionRoleMessage = result;
+  });
 
-  return client.user?.setActivity("with Discord.js", { type: 0 });
+  await runSafely("Setting bot activity", async () => {
+    client.user?.setActivity("with Discord.js", { type: 0 });
+  });
 });
 
 function logAndSendError(interaction: any, message: string, err?: any) {
@@ -203,17 +225,17 @@ client.on("guildMemberAdd", async (member) => {
 
   if (member.user.bot) {
     // BOTロールを付与
-    member.roles.add("1454099602641780737");
+    await addRoleSafely(member, "1454099602641780737", "bot");
 
     // 学生ロールを付与
-    member.roles.add("1454099602641780737");
+    await addRoleSafely(member, "1454099602641780737", "student");
   }
 
   // 年に応じたロールを付与
   if (date.getFullYear() == 2025) {
-    member.roles.add("1454661774576980090");
+    await addRoleSafely(member, "1454661774576980090", "2025 student");
   } else if (date.getFullYear() == 2026) {
-    member.roles.add("1455864840630308925");
+    await addRoleSafely(member, "1455864840630308925", "2026 student");
   }
 });
 
@@ -225,7 +247,9 @@ client.on("guildMemberRemove", async (member) => {
 client.on("threadCreate", async (thread, newlyCreated) => {
   if (thread.parentId === "1454093291325886658") {
     console.log("[noticeNewRecruit] Detect new Recruit");
-    noticeNewRecruit(client, thread);
+    await runSafely("Notice new recruit thread", () =>
+      noticeNewRecruit(client, thread),
+    );
   }
 });
 
@@ -297,4 +321,6 @@ client.on("messageReactionRemove", async (reaction, user) => {
 });
 
 export { FILE_TYPE, client, commands, actions };
-client.login(process.env.DISCORD_TOKEN);
+client.login(process.env.DISCORD_TOKEN).catch((error) => {
+  console.error("[ERROR] Failed to login Discord client:", error);
+});

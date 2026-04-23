@@ -1,5 +1,13 @@
 import { Client, EmbedBuilder, ThreadChannel } from "discord.js";
 
+async function sendSafely(target: { send: (payload: any) => Promise<unknown> }, payload: any, label: string) {
+  try {
+    await target.send(payload);
+  } catch (error) {
+    console.error(`[noticeNewRecruit] Failed to send ${label}:`, error);
+  }
+}
+
 export default async function noticeNewRecruit(
   client: Client,
   thread: ThreadChannel,
@@ -36,18 +44,18 @@ export default async function noticeNewRecruit(
       .setTimestamp()
       .setColor("#52f525");
 
-    await channel.send({ embeds: [embed] });
+    await sendSafely(channel, { embeds: [embed] }, "recruit notice");
     console.log("[noticeNewRecruit] Successfly sent");
   } catch (error) {
     const embed = new EmbedBuilder()
       .setTitle("エラーが発生しました")
       .setTimestamp()
       .setColor("#ff0000");
-    await thread.send({ embeds: [embed] });
+    await sendSafely(thread, { embeds: [embed] }, "thread error notice");
 
     console.error(error);
 
-    await channel.send({ embeds: [embed] });
+    await sendSafely(channel, { embeds: [embed] }, "channel error notice");
     console.log("[noticeNewRecruit] Successfly sent");
   }
 }
