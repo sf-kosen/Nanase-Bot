@@ -1,4 +1,4 @@
-import { VoiceState, ChannelType } from "discord.js";
+import { VoiceState } from "discord.js";
 import botConfig from "../../../../bot.config";
 
 const handleVcLeave = (async (oldState: VoiceState, newState: VoiceState) => {
@@ -15,15 +15,23 @@ const handleVcLeave = (async (oldState: VoiceState, newState: VoiceState) => {
             await channel.delete();
         } catch (error) {
             console.error("vc-leave: チャンネル削除に失敗しました:", error);
-            await fetch(process.env.WEBHOOK_URL || "", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    content: `vc-leave: チャンネル削除に失敗しました: ${error}`,
-                }),
-            });
+
+            const webhookUrl = process.env.WEBHOOK_URL?.trim();
+            if (!webhookUrl) return;
+
+            try {
+                await fetch(webhookUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        content: `vc-leave: チャンネル削除に失敗しました: ${String(error)}`,
+                    }),
+                });
+            } catch (webhookError) {
+                console.error("vc-leave: Webhook送信に失敗しました:", webhookError);
+            }
         }
     }
 });
