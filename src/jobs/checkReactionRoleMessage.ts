@@ -25,7 +25,8 @@ export default async function checkReactionRoleMessage(
     }
 
     if (!("send" in channel)) {
-      throw new Error("This channel can't send msg");
+      console.error("Reaction role channel can't send messages");
+      return null;
     }
 
     const messages = await channel.messages.fetch({ limit: 10 });
@@ -44,5 +45,6 @@ export default async function checkReactionRoleMessage(
     return sentMessage.id;
   }
 
-  throw new Error("This channel can't send msg");
+  console.error("Reaction role channel is not a text channel");
+  return null;
 }
