@@ -18,7 +18,7 @@ import noticeNewRecruit from "./jobs/noticeNewRecruit";
 import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
 import onMessageReactionRemove from "./handlers/events/onMessageReactionRemove";
 import onMessageReactionAdd from "./handlers/events/onMessageReactionAdd";
-import { env } from "./env";
+import { env } from "./configs/env"
 
 // 実行環境に応じてファイルタイプとディレクトリを決定
 const FILE_TYPE: string = process.argv[2] === "js" ? ".js" : ".ts";
