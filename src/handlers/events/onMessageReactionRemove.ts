@@ -5,7 +5,7 @@ export default async function onMessageReactionRemove(reaction: MessageReaction 
   const message = reaction.message;
   const member = message?.guild?.members.resolve(user.id);
 
-  console.log("[INFO]  messageReactionAdded");
+  console.log("[INFO]  messageReactionRemove");
   console.log(`   -> message: ${message.content?.toString()}`);
   console.log(`   -> member : ${member?.displayName}`);
 
