@@ -20,6 +20,7 @@ import addReactionRole from "./handlers/events/reactionRole/addReactionRole";
 import removeReactionRole from "./handlers/events/reactionRole/removeReactionRole";
 import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
 import onMessageReactionRemove from "./handlers/events/onMessageReactionRemove";
+import onMessageReactionAdd from "./handlers/events/onMessageReactionAdd";
 
 dotenv.config({ path: ".env" });
 
@@ -276,28 +277,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   }
 });
 
-client.on("messageReactionAdd", async (reaction, user) => {
-  const message = reaction.message;
-  const member = message?.guild?.members.resolve(user.id);
-
-  console.log("[INFO]  messageReactionAdded");
-  console.log(`   -> message: ${message.content?.toString()}`);
-  console.log(`   -> member : ${member?.displayName}`);
-
-  if (!member || !reaction.emoji.name) return;
-
-  console.log(`   -> react  : ${reaction.emoji.name}`);
-
-  // ReactionRole: ロール付与
-  if (message.id === reactionRoleMessage) {
-    try {
-      await addReactionRole(member, reaction.emoji.name);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-});
-
+client.on("messageReactionAdd", onMessageReactionAdd);
 client.on("messageReactionRemove", onMessageReactionRemove);
 
 export { FILE_TYPE, client, commands, actions };
