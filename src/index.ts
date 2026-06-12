@@ -14,13 +14,11 @@ import { handleVcLeave } from "./handlers/events/vc/leave";
 import { handleVcLogger } from "./handlers/events/vc/logger";
 import { updateMemberCount, firstJob } from "./jobs/updateMemberCount";
 import { loadCommands, loadActions } from "./utils/loader";
-import dotenv from "dotenv";
 import noticeNewRecruit from "./jobs/noticeNewRecruit";
 import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
 import onMessageReactionRemove from "./handlers/events/onMessageReactionRemove";
 import onMessageReactionAdd from "./handlers/events/onMessageReactionAdd";
-
-dotenv.config({ path: ".env" });
+import { env } from "./env";
 
 // 実行環境に応じてファイルタイプとディレクトリを決定
 const FILE_TYPE: string = process.argv[2] === "js" ? ".js" : ".ts";
@@ -279,6 +277,6 @@ client.on("messageReactionAdd", onMessageReactionAdd);
 client.on("messageReactionRemove", onMessageReactionRemove);
 
 export { FILE_TYPE, client, commands, actions };
-client.login(process.env.DISCORD_TOKEN).catch((error) => {
+client.login(env.tokens.discordToken).catch((error) => {
   console.error("[ERROR] Failed to login Discord client:", error);
 });
