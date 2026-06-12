@@ -16,8 +16,6 @@ import { updateMemberCount, firstJob } from "./jobs/updateMemberCount";
 import { loadCommands, loadActions } from "./utils/loader";
 import dotenv from "dotenv";
 import noticeNewRecruit from "./jobs/noticeNewRecruit";
-import addReactionRole from "./handlers/events/reactionRole/addReactionRole";
-import removeReactionRole from "./handlers/events/reactionRole/removeReactionRole";
 import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
 import onMessageReactionRemove from "./handlers/events/onMessageReactionRemove";
 import onMessageReactionAdd from "./handlers/events/onMessageReactionAdd";
