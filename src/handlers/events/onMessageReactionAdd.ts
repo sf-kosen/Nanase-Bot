@@ -1,8 +1,17 @@
-import type { MessageReaction, PartialMessageReaction, User, PartialUser } from "discord.js";
+import type {
+  MessageReaction,
+  PartialMessageReaction,
+  User,
+  PartialUser,
+} from "discord.js";
 
 import addReactionRole from "../../services/reactionRole/addReactionRole";
+import { runtimeConfig } from "../../configs/runtimeConfig";
 
-export default async function onMessageReactionAdd(reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser) {
+export default async function onMessageReactionAdd(
+  reaction: MessageReaction | PartialMessageReaction,
+  user: User | PartialUser,
+) {
   const message = reaction.message;
   const member = message?.guild?.members.resolve(user.id);
 
@@ -15,11 +24,11 @@ export default async function onMessageReactionAdd(reaction: MessageReaction | P
   console.log(`   -> react  : ${reaction.emoji.name}`);
 
   // ReactionRole: ロール付与
-  if (message.id === reactionRoleMessage) {
+  if (message.id === runtimeConfig.reactionRoleMessageId) {
     try {
       await addReactionRole(member, reaction.emoji.name);
     } catch (e) {
       console.error(e);
     }
   }
-});
+}

@@ -1,7 +1,17 @@
-import type { MessageReaction, PartialMessageReaction, PartialUser, User } from "discord.js";
-import removeReactionRole from "../../services/reactionRole/removeReactionRole";
+import type {
+  MessageReaction,
+  PartialMessageReaction,
+  PartialUser,
+  User,
+} from "discord.js";
 
-export default async function onMessageReactionRemove(reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser) {
+import removeReactionRole from "../../services/reactionRole/removeReactionRole";
+import { runtimeConfig } from "../../configs/runtimeConfig";
+
+export default async function onMessageReactionRemove(
+  reaction: MessageReaction | PartialMessageReaction,
+  user: User | PartialUser,
+) {
   const message = reaction.message;
   const member = message?.guild?.members.resolve(user.id);
 
@@ -14,7 +24,7 @@ export default async function onMessageReactionRemove(reaction: MessageReaction 
   console.log(`   -> react  : ${reaction.emoji.name}`);
 
   // ReactionRole: ロール剥奪
-  if (message.id === reactionRoleMessage) {
+  if (message.id === runtimeConfig.reactionRoleMessageId) {
     try {
       await removeReactionRole(member, reaction.emoji.name);
     } catch (e) {
