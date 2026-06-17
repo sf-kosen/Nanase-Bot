@@ -18,7 +18,9 @@ import noticeNewRecruit from "./jobs/noticeNewRecruit";
 import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
 import onMessageReactionRemove from "./handlers/events/onMessageReactionRemove";
 import onMessageReactionAdd from "./handlers/events/onMessageReactionAdd";
-import { env } from "./configs/env"
+import { env } from "./configs/env";
+import { runtimeConfig } from "./configs/runtimeConfig";
+import { run } from "node:test";
 
 // 実行環境に応じてファイルタイプとディレクトリを決定
 const FILE_TYPE: string = process.argv[2] === "js" ? ".js" : ".ts";
@@ -55,7 +57,11 @@ async function runSafely(label: string, task: () => Promise<void>) {
   }
 }
 
-async function addRoleSafely(member: GuildMember, roleId: string, label: string) {
+async function addRoleSafely(
+  member: GuildMember,
+  roleId: string,
+  label: string,
+) {
   try {
     await member.roles.add(roleId);
   } catch (error) {
@@ -83,7 +89,9 @@ client.once("clientReady", async () => {
   console.log("");
 
   await runSafely("Initial member fetch", () => firstJob(client));
-  await runSafely("Initial member count update", () => updateMemberCount(client));
+  await runSafely("Initial member count update", () =>
+    updateMemberCount(client),
+  );
 
   await runSafely("Reaction role message check", async () => {
     const result = await checkReactionRoleMessage(client);
@@ -91,7 +99,7 @@ client.once("clientReady", async () => {
       console.error("This channel can't send msg");
       return;
     }
-    reactionRoleMessage = result;
+    runtimeConfig.reactionRoleMessageId = result;
   });
 
   await runSafely("Setting bot activity", async () => {
@@ -143,7 +151,11 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
       let command: ButtonCommand;
       try {
         const parsed = JSON.parse(customId);
-        if (typeof parsed !== "object" || parsed === null || typeof parsed.action !== "string") {
+        if (
+          typeof parsed !== "object" ||
+          parsed === null ||
+          typeof parsed.action !== "string"
+        ) {
           console.error(`Invalid button customId format: ${customId}`);
           await interaction.deferUpdate();
           return;
@@ -177,15 +189,25 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
       let command: ModalCommand;
       try {
         const parsed = JSON.parse(customId);
-        if (typeof parsed !== "object" || parsed === null || typeof parsed.action !== "string") {
+        if (
+          typeof parsed !== "object" ||
+          parsed === null ||
+          typeof parsed.action !== "string"
+        ) {
           console.error(`Invalid modal customId format: ${customId}`);
-          await interaction.reply({ content: "invalid request", ephemeral: true });
+          await interaction.reply({
+            content: "invalid request",
+            ephemeral: true,
+          });
           return;
         }
         command = parsed as ModalCommand;
       } catch {
         console.error(`Failed to parse modal customId: ${customId}`);
-        await interaction.reply({ content: "invalid request", ephemeral: true });
+        await interaction.reply({
+          content: "invalid request",
+          ephemeral: true,
+        });
         return;
       }
       const actionName = command.action;
