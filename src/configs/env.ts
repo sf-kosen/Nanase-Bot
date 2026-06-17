@@ -1,9 +1,9 @@
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
 export const env = {
   tokens: {
-    discordToken: process.env.DISCORD_TOKEN
-  }
-}
+    discordToken: process.env.DISCORD_TOKEN,
+  },
+};
