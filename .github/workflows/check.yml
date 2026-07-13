@@ -1,0 +1,33 @@
+name: Check
+
+# TODO: リンター・フォーマッターを追加する。
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  check:
+    name: ${{ matrix.command }}
+    strategy:
+      matrix:
+        command:
+          - typecheck
+          # - lint
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run ${{ matrix.command }}
