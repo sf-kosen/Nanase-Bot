@@ -37,7 +37,6 @@ const CLIENT_INTENTS: GatewayIntentBits[] = [
 
 let commands: { [key: string]: Command } = {};
 let actions: Actions = { button: {}, modal: {} };
-const test: string = 123;
 
 commands = loadCommands(BASE_DIR, FILE_TYPE);
 actions = loadActions(BASE_DIR, FILE_TYPE);
