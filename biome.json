@@ -44,15 +44,8 @@
 		"enabled": true,
 		"actions": {
 			"source": {
-				"organizeImports": "on",
-				"fixAll": "on"
+				"organizeImports": "on"
 			}
 		}
-	},
-	"includes": [
-		"!dist",
-		"!coverage",
-		"!node_modules",
-		"!build"
-	]
+	}
 }
