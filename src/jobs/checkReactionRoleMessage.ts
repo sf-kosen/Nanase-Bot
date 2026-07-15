@@ -2,8 +2,10 @@ import { Client } from "discord.js";
 
 const REACTION_ROLE_MESSAGE = [
   "リアクションしてロールを付与しよう！",
-  ":bell: : 通知勢 : たくさん通知が届くよ！",
-  ":sound: : VC募集 : VCに参加したい人向け！",
+  "- 🔔 : 通知勢",
+  "> たくさん通知が届くよ！",
+  "- 🔉 : VC募集",
+  "> VCに参加したい人向け！",
 ].join("\n");
 
 export default async function checkReactionRoleMessage(
@@ -38,6 +40,9 @@ export default async function checkReactionRoleMessage(
     );
 
     if (targetMessage) {
+      if (targetMessage.content !== REACTION_ROLE_MESSAGE) {
+        await targetMessage.edit(REACTION_ROLE_MESSAGE);
+      }
       return targetMessage.id;
     }
 
