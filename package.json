@@ -17,11 +17,11 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "discord.js": "^14.25.1",
+    "discord.js": "^14.26.5",
     "dotenv": "^17.2.3",
-    "axios": "1.14.0"
+    "axios": "1.16.0"
   },
-  "overrides" : {
-    "axios": "1.14.0"
+  "overrides": {
+    "axios": "1.16.0"
   }
 }
