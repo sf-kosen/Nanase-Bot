@@ -10,6 +10,7 @@
     "build": "tsc",
     "start": "node -r tsconfig-paths/register ./build/index.js",
     "// linters //": "",
+    "typecheck": "tsc --noEmit"
     "lint": "biome lint .",
     "format": "biome format . --write",
     "check": "biome check .",
