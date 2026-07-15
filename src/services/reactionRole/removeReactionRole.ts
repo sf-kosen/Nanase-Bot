@@ -10,21 +10,21 @@ export default async function removeReactionRole(
   if (!member || !emoji) return;
 
   if (emoji === "🔔") {
-    if (!env.role_id.notifier) {
+    if (!env.roleID.notifier) {
       console.error("NOTIFIER_ROLE_ID is not set");
       return;
     }
 
-    await member.roles.remove(env.role_id.notifier);
+    await member.roles.remove(env.roleID.notifier);
     console.log(`[INFO]  : removeReactionRole <NOTIFIER>`);
     return;
   } else if (emoji === "🔉") {
-    if (!env.role_id.vc) {
+    if (!env.roleID.vc) {
       console.error("VC_ROLE_ID is not set");
       return;
     }
 
-    await member.roles.remove(env.role_id.vc);
+    await member.roles.remove(env.roleID.vc);
     console.log(`[INFO]  : removeReactionRole <VC>`);
   }
 }
