@@ -9,5 +9,5 @@ services:
       target: development
     volumes:
       - .:/app
-      - /app/node_modulejk
+      - /app/node_module
       - /app/.pnpm-store
