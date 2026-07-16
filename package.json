@@ -9,9 +9,15 @@
     "dev": "ts-node src/index.ts",
     "build": "tsc",
     "start": "node -r tsconfig-paths/register ./build/index.js",
-    "typecheck": "tsc --noEmit"
+    "// linters //": "",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint .",
+    "format": "biome format . --write",
+    "check": "biome check .",
+    "fix": "biome check . --write"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.3",
     "@types/node": "^25.0.3",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
@@ -19,8 +25,7 @@
   },
   "dependencies": {
     "discord.js": "^14.26.5",
-    "dotenv": "^17.2.3",
-    "axios": "1.16.0"
+    "dotenv": "^17.2.3"
   },
   "overrides": {
     "axios": "1.16.0"

@@ -1,7 +1,5 @@
 name: Check
 
-# TODO: リンター・フォーマッターを追加する。
-
 on:
   pull_request:
   push:
@@ -13,7 +11,8 @@ jobs:
       matrix:
         command:
           - typecheck
-          # - lint
+          # FIXME: fixが完了したらこのコメントアウトを外し、CIを有効化する。
+          # - check
 
     runs-on: ubuntu-latest
 
