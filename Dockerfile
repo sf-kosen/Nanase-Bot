@@ -14,7 +14,7 @@ COPY . .
 CMD ["pnpm", "run", "dev"]
 
 FROM base AS builder
-RUN npm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 COPY . .
 
 RUN pnpm run build
