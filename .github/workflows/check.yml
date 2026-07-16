@@ -11,8 +11,7 @@ jobs:
       matrix:
         command:
           - typecheck
-          # FIXME: fixが完了したらこのコメントアウトを外し、CIを有効化する。
-          # - check
+          - check
 
     runs-on: ubuntu-latest
 
