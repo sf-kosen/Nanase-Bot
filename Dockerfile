@@ -31,4 +31,4 @@ COPY --from=builder /app/build ./build
 USER node
 EXPOSE 3000
 
-CMD ["node", "-r", "tsconfig-paths/register", "./build/index.js"]
+CMD ["node", "./build/index.js"]
