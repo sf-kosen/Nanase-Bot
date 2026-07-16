@@ -4,5 +4,10 @@ services:
     stdin_open: true
     tty: true
     build:
-      dockerfile: ./Dockerfile
       context: .
+      dockerfile: ./Dockerfile
+      target: development
+    volumes:
+      - .:/app
+      - /app/node_module
+      - /app/.pnpm-store
