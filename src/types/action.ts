@@ -1,22 +1,22 @@
-import { ButtonInteraction, ModalSubmitInteraction } from "discord.js";
+import type { ButtonInteraction, ModalSubmitInteraction } from "discord.js";
 
 interface Action<ActionType = ButtonInteraction | ModalSubmitInteraction | any> {
-    data: {
-        action: string;
-        defer?: boolean;
-        flags?: number;
-    };
+	data: {
+		action: string;
+		defer?: boolean;
+		flags?: number;
+	};
 
-    execute: (interaction: ActionType) => Promise<void>;
+	execute: (interaction: ActionType) => Promise<void>;
 }
 
 interface Actions {
-    button: Record<string, Action<ButtonInteraction>>;
-    modal: Record<string, Action<ModalSubmitInteraction>>;
+	button: Record<string, Action<ButtonInteraction>>;
+	modal: Record<string, Action<ModalSubmitInteraction>>;
 
-    [key: string]: {
-        [key: string]: Action<any>
-    }
+	[key: string]: {
+		[key: string]: Action<any>;
+	};
 }
 
 export type { Action, Actions };
