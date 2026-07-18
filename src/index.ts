@@ -14,13 +14,13 @@ import { handleVcLeave } from "./handlers/events/vc/leave";
 import { handleVcLogger } from "./handlers/events/vc/logger";
 import { updateMemberCount, firstJob } from "./jobs/updateMemberCount";
 import { loadCommands, loadActions } from "./utils/loader";
-import dotenv from "dotenv";
 import noticeNewRecruit from "./jobs/noticeNewRecruit";
-import addReactionRole from "./handlers/events/reactionRole/addReactionRole";
-import removeReactionRole from "./handlers/events/reactionRole/removeReactionRole";
 import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
-
-dotenv.config({ path: ".env" });
+import onMessageReactionRemove from "./handlers/events/onMessageReactionRemove";
+import onMessageReactionAdd from "./handlers/events/onMessageReactionAdd";
+import { env } from "./configs/env";
+import { runtimeConfig } from "./configs/runtimeConfig";
+import { run } from "node:test";
 
 // 実行環境に応じてファイルタイプとディレクトリを決定
 const FILE_TYPE: string = process.argv[2] === "js" ? ".js" : ".ts";
@@ -57,7 +57,11 @@ async function runSafely(label: string, task: () => Promise<void>) {
   }
 }
 
-async function addRoleSafely(member: GuildMember, roleId: string, label: string) {
+async function addRoleSafely(
+  member: GuildMember,
+  roleId: string,
+  label: string,
+) {
   try {
     await member.roles.add(roleId);
   } catch (error) {
@@ -85,7 +89,9 @@ client.once("clientReady", async () => {
   console.log("");
 
   await runSafely("Initial member fetch", () => firstJob(client));
-  await runSafely("Initial member count update", () => updateMemberCount(client));
+  await runSafely("Initial member count update", () =>
+    updateMemberCount(client),
+  );
 
   await runSafely("Reaction role message check", async () => {
     const result = await checkReactionRoleMessage(client);
@@ -93,7 +99,7 @@ client.once("clientReady", async () => {
       console.error("This channel can't send msg");
       return;
     }
-    reactionRoleMessage = result;
+    runtimeConfig.reactionRoleMessageId = result;
   });
 
   await runSafely("Setting bot activity", async () => {
@@ -145,7 +151,11 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
       let command: ButtonCommand;
       try {
         const parsed = JSON.parse(customId);
-        if (typeof parsed !== "object" || parsed === null || typeof parsed.action !== "string") {
+        if (
+          typeof parsed !== "object" ||
+          parsed === null ||
+          typeof parsed.action !== "string"
+        ) {
           console.error(`Invalid button customId format: ${customId}`);
           await interaction.deferUpdate();
           return;
@@ -179,15 +189,25 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
       let command: ModalCommand;
       try {
         const parsed = JSON.parse(customId);
-        if (typeof parsed !== "object" || parsed === null || typeof parsed.action !== "string") {
+        if (
+          typeof parsed !== "object" ||
+          parsed === null ||
+          typeof parsed.action !== "string"
+        ) {
           console.error(`Invalid modal customId format: ${customId}`);
-          await interaction.reply({ content: "invalid request", ephemeral: true });
+          await interaction.reply({
+            content: "invalid request",
+            ephemeral: true,
+          });
           return;
         }
         command = parsed as ModalCommand;
       } catch {
         console.error(`Failed to parse modal customId: ${customId}`);
-        await interaction.reply({ content: "invalid request", ephemeral: true });
+        await interaction.reply({
+          content: "invalid request",
+          ephemeral: true,
+        });
         return;
       }
       const actionName = command.action;
@@ -275,52 +295,10 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   }
 });
 
-client.on("messageReactionAdd", async (reaction, user) => {
-  const message = reaction.message;
-  const member = message?.guild?.members.resolve(user.id);
-
-  console.log("[INFO]  messageReactionAdded");
-  console.log(`   -> message: ${message.content?.toString()}`);
-  console.log(`   -> member : ${member?.displayName}`);
-
-  if (!member || !reaction.emoji.name) return;
-
-  console.log(`   -> react  : ${reaction.emoji.name}`);
-
-  // ReactionRole: ロール付与
-  if (message.id === reactionRoleMessage) {
-    try {
-      await addReactionRole(member, reaction.emoji.name);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-});
-
-client.on("messageReactionRemove", async (reaction, user) => {
-  const message = reaction.message;
-  const member = message?.guild?.members.resolve(user.id);
-
-  console.log("[INFO]  messageReactionAdded");
-  console.log(`   -> message: ${message.content?.toString()}`);
-  console.log(`   -> member : ${member?.displayName}`);
-
-  if (!member || !reaction.emoji.name) return;
-
-  console.log(`   -> react  : ${reaction.emoji.name}`);
-
-  // ReactionRole: ロール剥奪
-  if (message.id === reactionRoleMessage) {
-    try {
-      await removeReactionRole(member, reaction.emoji.name);
-    } catch (e) {
-      console.error(e);
-      // この先通知処理も追加
-    }
-  }
-});
+client.on("messageReactionAdd", onMessageReactionAdd);
+client.on("messageReactionRemove", onMessageReactionRemove);
 
 export { FILE_TYPE, client, commands, actions };
-client.login(process.env.DISCORD_TOKEN).catch((error) => {
+client.login(env.tokens.discordToken).catch((error) => {
   console.error("[ERROR] Failed to login Discord client:", error);
 });
