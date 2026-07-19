@@ -1,33 +1,33 @@
 {
-  "name": "nanase-bot",
-  "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
-  "author": "",
-  "main": "src/index.ts",
-  "scripts": {
-    "dev": "ts-node src/index.ts",
-    "build": "tsc",
-    "start": "node -r tsconfig-paths/register ./build/index.js",
-    "// linters //": "",
-    "typecheck": "tsc --noEmit",
-    "lint": "biome lint .",
-    "format": "biome format . --write",
-    "check": "biome check .",
-    "fix": "biome check . --write"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.5.3",
-    "@types/node": "^25.0.3",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "discord.js": "^14.26.5",
-    "dotenv": "^17.2.3"
-  },
-  "overrides": {
-    "axios": "1.16.0"
-  }
+	"name": "nanase-bot",
+	"version": "1.0.0",
+	"description": "",
+	"license": "ISC",
+	"author": "",
+	"main": "src/index.ts",
+	"scripts": {
+		"dev": "ts-node src/index.ts",
+		"build": "tsc",
+		"start": "node -r tsconfig-paths/register ./build/index.js",
+		"// linters //": "",
+		"typecheck": "tsc --noEmit",
+		"lint": "biome lint .",
+		"format": "biome format . --write",
+		"check": "biome check .",
+		"fix": "biome check . --write"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.3",
+		"@types/node": "^25.0.3",
+		"ts-node": "^10.9.2",
+		"tsconfig-paths": "^4.2.0",
+		"typescript": "^5.9.3"
+	},
+	"dependencies": {
+		"discord.js": "^14.26.5",
+		"dotenv": "^17.2.3"
+	},
+	"overrides": {
+		"axios": "1.16.0"
+	}
 }
