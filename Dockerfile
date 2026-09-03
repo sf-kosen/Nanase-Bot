@@ -29,6 +29,5 @@ RUN pnpm install --frozen-lockfile --prod
 COPY --from=builder /app/build ./build
 
 USER node
-EXPOSE 3000
 
 CMD ["node", "./build/src/index.js"]

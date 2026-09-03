@@ -1,3 +1,4 @@
+import path from "node:path";
 import {
 	type ButtonInteraction,
 	type CacheType,
@@ -8,7 +9,6 @@ import {
 	type ModalSubmitInteraction,
 } from "discord.js";
 import dotenv from "dotenv";
-import path from "node:path";
 import addReactionRole from "./handlers/events/reactionRole/addReactionRole";
 import removeReactionRole from "./handlers/events/reactionRole/removeReactionRole";
 import { handleVcJoin } from "./handlers/events/vc/join";
@@ -28,8 +28,8 @@ dotenv.config({ path: ".env" });
 // 起動引数や出力ディレクトリ名に依存しない。
 const FILE_TYPE = path.extname(__filename);
 
-if (!['.js', '.ts'].includes(FILE_TYPE)) {
-	throw new Error('File type was not allowed');
+if (![".js", ".ts"].includes(FILE_TYPE)) {
+	throw new Error(`Unsupported entry-point extension: ${FILE_TYPE || "(none)"}`);
 }
 const BASE_DIR = __dirname;
 
