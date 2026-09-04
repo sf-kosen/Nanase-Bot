@@ -31,13 +31,17 @@ export function loadActions(BASE_DIR: string, FILE_TYPE: string): Actions {
 	const folders = ["button", "modal"];
 
 	for (const folder of folders) {
-		const actionFiles = fs
-			.readdirSync(path.resolve(BASE_DIR, "handlers", folder))
-			.filter((file) => file.endsWith(FILE_TYPE));
+		const actionDir = path.resolve(BASE_DIR, "handlers", folder);
+		if (!fs.existsSync(actionDir)) {
+			console.log(`  Handler Type: ${folder} (none)`);
+			continue;
+		}
+
+		const actionFiles = fs.readdirSync(actionDir).filter((file) => file.endsWith(FILE_TYPE));
 		console.log(`  Handler Type: ${folder}`);
 
 		for (const file of actionFiles) {
-			const reqPath = path.resolve(BASE_DIR, "handlers", folder, file);
+			const reqPath = path.resolve(actionDir, file);
 			const action = require(reqPath).default as Action<any>;
 			console.log(`    Load: ${action.data.action}`);
 			actions[folder][action.data.action] = action;

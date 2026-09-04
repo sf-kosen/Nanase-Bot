@@ -4,5 +4,15 @@ services:
     stdin_open: true
     tty: true
     build:
-      dockerfile: ./Dockerfile
       context: .
+      dockerfile: ./Dockerfile
+      target: development
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+      - pnpm_store:/pnpm/store
+    command: sh -c "pnpm install --frozen-lockfile && pnpm dev"
+
+volumes:
+  node_modules:
+  pnpm_store:

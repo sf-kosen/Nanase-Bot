@@ -11,9 +11,9 @@
 ---
 
 ## 読み込みルール（`src/index.ts` の挙動） 🔧
-- 実行時に `FILE_TYPE` を判定し、`.ts`（開発）/`.js`（本番）に合わせて読み込むファイル拡張子を決定します。
-  - 開発: `process.argv[2] !== "js"` → `FILE_TYPE = ".ts"` → `BASE_DIR = "./src"`
-  - 本番: `process.argv[2] === "js"` → `FILE_TYPE = ".js"` → `BASE_DIR = "./dist"`
+- 実行ファイルの拡張子から `FILE_TYPE` を判定し、`.ts`（開発）/`.js`（本番）に合わせて読み込むファイル拡張子を決定します。
+  - 開発: `src/index.ts` → `FILE_TYPE = ".ts"` → `BASE_DIR = "src"`
+  - 本番: `build/src/index.js` → `FILE_TYPE = ".js"` → `BASE_DIR = "build/src"`
 - コマンド読込:
   - `${BASE_DIR}/commands` 以下の `FILE_TYPE` 拡張子で終わるファイルを全て `require()` して読み込みます。
   - 読み込んだモジュールは `commands[command.data.name] = command` として登録されます。
@@ -114,8 +114,9 @@ module.exports = { data, execute };
 ---
 
 ## 実行時の注意 📝
-- 開発時に `.ts` ファイルを直接読み込む場合は `ts-node` や `ts-node/register` を使うか、`FILE_TYPE` を適切に設定してください。
-- 本番ではビルドして `dist`（`.js`）を生成し、`node dist/index.js js` のように第2引数に `js` を渡して実行することで `FILE_TYPE=".js"` として読み込みます。
+- 開発時は `pnpm dev` で `src/index.ts` を実行します。
+- 本番では `pnpm build` で `build` を生成し、`node build/src/index.js` を実行します。
+- Docker Compose による開発環境は起動時に `pnpm install --frozen-lockfile` を実行するため、ロックファイル変更後も名前付き `node_modules` ボリュームの依存関係が同期されます。
 
 ---
 

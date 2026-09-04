@@ -9,10 +9,12 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Deploy
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           set -e
-          echo "Release ${{ github.event.release.tag_name }} detected"
+          echo "Release ${RELEASE_TAG} detected"
           cd /home/sora81dev/discord-bot/nanase-bot
           git fetch --all --tags
-          git checkout ${{ github.event.release.tag_name }}
-          docker compose up -d --build
+          git checkout --detach "refs/tags/${RELEASE_TAG}"
+          docker compose -f docker-compose.prod.yml up -d --build --remove-orphans

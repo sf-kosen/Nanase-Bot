@@ -1,0 +1,10 @@
+services:
+  nanase-bot:
+    container_name: nanase-bot
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: production
+    env_file:
+      - .env
+    restart: unless-stopped
