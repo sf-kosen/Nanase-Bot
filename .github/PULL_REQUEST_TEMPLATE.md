@@ -12,8 +12,8 @@
 
 - Tag  
   最適なものを付与したうえで以下のいずれかを選択する。
-  - CIの必要がある: `require-ci`
-  - CIの必要がない: `not-require-ci`
+  - CIの必要がある: `require_ci`
+  - CIの必要がない: `not_require_ci`
 ~~~
 
 ## About this PR
