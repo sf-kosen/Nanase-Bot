@@ -3,12 +3,15 @@
 その後この説明ブロックを削除
 
 - Title
-  以下の形式で日本語とする  
-  `feat: xxx`  
+  Prefixはgitと同様とし、以下の形式で日本語とする  
+  - `chore: xxx`
+  - `feat: xxx`  
+  - `fix: xxx`
+  - `hotfix: xxx`
+  - `refactor: xxx`
 
 - Tag  
-  必須: `enchancement`  
-  いずれか選択:  
+  最適なものを付与したうえで以下のいずれかを選択する。
   - CIの必要がある: `require-ci`
   - CIの必要がない: `not-require-ci`
 ~~~
