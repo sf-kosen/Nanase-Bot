@@ -4,7 +4,7 @@ export default function checkEnv(): boolean {
   let isPass: boolean = true;
 
   if (!env.role_id.notifier) {
-    console.log("[checkEnv] NOTIFIER_ROLE_ID is not set");
+    console.error("[checkEnv] NOTIFIER_ROLE_ID is not set");
     isPass = false;
   }
 
