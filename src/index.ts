@@ -240,11 +240,11 @@ client.on("guildMemberAdd", async (member) => {
 });
 
 // メンバー数更新
-client.on("guildMemberRemove", async (member) => {
+client.on("guildMemberRemove", async (_member) => {
   await updateMemberCount(client);
 });
 
-client.on("threadCreate", async (thread, newlyCreated) => {
+client.on("threadCreate", async (thread, _newlyCreated) => {
   if (thread.parentId === "1454093291325886658") {
     console.log("[noticeNewRecruit] Detect new Recruit");
     await runSafely("Notice new recruit thread", () => noticeNewRecruit(client, thread));
