@@ -1,8 +1,6 @@
 import type { Client } from "discord.js";
 import { getMemberStatus } from "../utils/getMemberStatus";
-
-const CHANNEL_ID = "1454473598973509697";
-const GUILD_ID = "1452263053180534806";
+import { env } from "./../configs/env";
 
 let membersFetched = false;
 
@@ -12,19 +10,19 @@ export async function updateMemberCount(client: Client) {
   try {
     console.log("[INFO]  Updating member count...");
 
-    const guild = client.guilds.cache.get(GUILD_ID);
+    const guild = client.guilds.cache.get(env.info.guildID);
     if (!guild) {
       console.error("[ERROR] Guild not found");
       return;
     }
 
-    const channel = guild.channels.cache.get(CHANNEL_ID);
+    const channel = guild.channels.cache.get(env.channelID.memberCount);
     if (!channel || !channel.isTextBased()) {
       console.error("[ERROR] Channel not found or not a text channel");
       return;
     }
 
-    const studentRole = guild.roles.cache.get("1454446371221536788");
+    const studentRole = guild.roles.cache.get(env.role_id.student);
     if (!studentRole) {
       console.error("[ERROR] Student role not found");
       return;
@@ -47,7 +45,7 @@ export async function updateMemberCount(client: Client) {
 export async function firstJob(client: Client) {
   console.log("[INFO]  Starting first job...");
 
-  const guild = await client.guilds.fetch(GUILD_ID);
+  const guild = await client.guilds.fetch(env.info.guildID);
   await guild.members.fetch();
   membersFetched = true;
 

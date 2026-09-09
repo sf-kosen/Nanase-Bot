@@ -1,4 +1,5 @@
 import type { Client } from "discord.js";
+import { env } from "./../configs/env";
 
 const REACTION_ROLE_MESSAGE = [
   "リアクションしてロールを付与しよう！",
@@ -9,15 +10,7 @@ const REACTION_ROLE_MESSAGE = [
 ].join("\n");
 
 export default async function checkReactionRoleMessage(client: Client): Promise<string | null> {
-  const reactionRoleChannelID = process.env["REACTIONROLE_CHANNEL_ID"];
-  const botID = process.env["BOT_ID"];
-
-  if (!reactionRoleChannelID || !botID) {
-    console.error("REACTIONROLE_CHANNEL_ID or BOT_ID is not set");
-    return null;
-  }
-
-  const channel = await client.channels.fetch(reactionRoleChannelID);
+  const channel = await client.channels.fetch(env.channelID.reactionRole);
 
   if (channel && channel.isTextBased()) {
     if (channel.partial) {
@@ -32,7 +25,7 @@ export default async function checkReactionRoleMessage(client: Client): Promise<
     const messages = await channel.messages.fetch({ limit: 10 });
 
     const targetMessage = messages.find(
-      (m) => m.author.id === botID && m.content.includes("リアクションしてロールを付与しよう！"),
+      (m) => m.author.id === env.info.botID && m.content.includes("リアクションしてロールを付与しよう！"),
     );
 
     if (targetMessage) {
