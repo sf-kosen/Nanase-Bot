@@ -20,6 +20,7 @@ import { firstJob, updateMemberCount } from "./jobs/updateMemberCount";
 import type { Action, Actions } from "./types/action";
 import type { ButtonCommand, Command, ModalCommand } from "./types/command";
 import { loadActions, loadCommands } from "./utils/loader";
+import checkEnv from "./jobs/checkEnv";
 
 dotenv.config({ path: ".env" });
 
@@ -72,6 +73,11 @@ async function addRoleSafely(member: GuildMember, roleId: string, label: string)
 }
 
 client.once("clientReady", async () => {
+  // .envファイルの確認
+  if (checkEnv()) {
+    console.error("loading .env failed");
+  }
+
   console.log(`Logged in as ${client.user?.tag}`);
 
   await runSafely("Registering commands", async () => {
