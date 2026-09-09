@@ -8,7 +8,6 @@ import {
   type Interaction,
   type ModalSubmitInteraction,
 } from "discord.js";
-import dotenv from "dotenv";
 import addReactionRole from "./handlers/events/reactionRole/addReactionRole";
 import removeReactionRole from "./handlers/events/reactionRole/removeReactionRole";
 import { handleVcJoin } from "./handlers/events/vc/join";
@@ -21,8 +20,7 @@ import type { Action, Actions } from "./types/action";
 import type { ButtonCommand, Command, ModalCommand } from "./types/command";
 import { loadActions, loadCommands } from "./utils/loader";
 import checkEnv from "./jobs/checkEnv";
-
-dotenv.config({ path: ".env" });
+import { env } from "./configs/env";
 
 // 実行中のファイルの配置から、読み込むモジュールの種類と基準ディレクトリを決定する。
 // ts-node では src/index.ts、コンパイル後の Node.js では build/src/index.js になるため、
@@ -231,14 +229,14 @@ client.on("guildMemberAdd", async (member) => {
 
   if (member.user.bot) {
     // BOTロールを付与
-    await addRoleSafely(member, "1454099602641780737", "bot");
+    await addRoleSafely(member, env.role_id.bot, "bot");
 
     // 学生ロールを付与
-    await addRoleSafely(member, "1454099602641780737", "student");
+    await addRoleSafely(member, env.role_id.student, "student");
   }
 
   // 年に応じたロールを付与(第3期生)
-  await addRoleSafely(member, "1504117815333093426", "2026 student");
+  await addRoleSafely(member, env.role_id.term, "2026 student");
 });
 
 // メンバー数更新
@@ -262,8 +260,8 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
 
   //　学生ロールの付与、剥奪を検知して学生数カウントを更新
   if (
-    (!oldMember.roles.cache.has("1454446371221536788") && newMember.roles.cache.has("1454446371221536788")) ||
-    (oldMember.roles.cache.has("1454446371221536788") && !newMember.roles.cache.has("1454446371221536788"))
+    (!oldMember.roles.cache.has(env.role_id.student) && newMember.roles.cache.has(env.role_id.student)) ||
+    (oldMember.roles.cache.has(env.role_id.student) && !newMember.roles.cache.has(env.role_id.student))
   ) {
     await updateMemberCount(client);
   }
@@ -316,6 +314,6 @@ client.on("messageReactionRemove", async (reaction, user) => {
 
 export { actions, client, commands, FILE_TYPE };
 
-client.login(process.env.DISCORD_TOKEN).catch((error) => {
+client.login(env.token.discord).catch((error) => {
   console.error("[ERROR] Failed to login Discord client:", error);
 });

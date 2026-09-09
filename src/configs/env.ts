@@ -15,8 +15,14 @@ export const env = {
   },
 
   role_id: {
+    bot: process.env.BOT_ROLE_ID!,
     notifier: process.env.NOTIFIER_ROLE_ID!,
     student: process.env.STUDENT_ROLE_ID!,
+    term: process.env.TERM_ROLE_ID!,
     vc: process.env.VC_ROLE_ID!,
+  },
+
+  token: {
+    discord: process.env.DISCORD_TOKEN!,
   },
 };

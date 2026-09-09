@@ -28,6 +28,11 @@ export default function checkEnv(): boolean {
     isPass = false;
   }
 
+  if (!env.role_id.bot) {
+    console.error("[checkEnv] BOT_ROLE_ID is not set");
+    isPass = false;
+  }
+
   if (!env.role_id.notifier) {
     console.error("[checkEnv] NOTIFIER_ROLE_ID is not set");
     isPass = false;
@@ -35,10 +40,21 @@ export default function checkEnv(): boolean {
 
   if (!env.role_id.student) {
     console.error("[checkEnv] STUDENT_ROLE_ID is not set");
+    isPass = false;
+  }
+
+  if (!env.role_id.term) {
+    console.error("[checkEnv] TERM_ROLE_ID is not set");
+    isPass = false;
   }
 
   if (!env.role_id.vc) {
     console.error("[checkEnv] VC_ROLE_ID is not set");
+    isPass = false;
+  }
+
+  if (!env.token.discord) {
+    console.error("[checkEnv] DISCORD_TOKEN is not set");
     isPass = false;
   }
 
