@@ -10,8 +10,6 @@ async function sendSafely(target: { send: (payload: any) => Promise<unknown> }, 
 }
 
 export default async function noticeNewRecruit(client: Client, thread: ThreadChannel) {
-  const name = thread.name;
-
   const channel = client.channels.cache.get(env.channelID.recruitNotice);
   if (!channel || !channel.isSendable()) return;
 

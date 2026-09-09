@@ -1,5 +1,4 @@
 import type { Client } from "discord.js";
-import { getMemberStatus } from "../utils/getMemberStatus";
 import { env } from "./../configs/env";
 
 let membersFetched = false;
