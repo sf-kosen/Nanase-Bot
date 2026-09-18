@@ -63,15 +63,7 @@ async function runSafely(label: string, task: () => Promise<void>) {
   }
 }
 
-<<<<<<< HEAD
 async function addRoleSafely(member: GuildMember, roleId: string, label: string) {
-=======
-async function addRoleSafely(
-  member: GuildMember,
-  roleId: string,
-  label: string,
-) {
->>>>>>> 3b65a01 (chore: remove firstJob in updateMemberCount)
   try {
     await member.roles.add(roleId);
   } catch (error) {
@@ -98,14 +90,7 @@ client.once("clientReady", async () => {
   console.log("Bot is ready!");
   console.log("");
 
-<<<<<<< HEAD
-  await runSafely("Initial member fetch", () => firstJob(client));
   await runSafely("Initial member count update", () => updateMemberCount(client));
-=======
-  await runSafely("Initial member count update", () =>
-    updateMemberCount(client),
-  );
->>>>>>> 3b65a01 (chore: remove firstJob in updateMemberCount)
 
   await runSafely("Reaction role message check", async () => {
     const result = await checkReactionRoleMessage(client);
@@ -165,15 +150,7 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
       let command: ButtonCommand;
       try {
         const parsed = JSON.parse(customId);
-<<<<<<< HEAD
         if (typeof parsed !== "object" || parsed === null || typeof parsed.action !== "string") {
-=======
-        if (
-          typeof parsed !== "object" ||
-          parsed === null ||
-          typeof parsed.action !== "string"
-        ) {
->>>>>>> 3b65a01 (chore: remove firstJob in updateMemberCount)
           console.error(`Invalid button customId format: ${customId}`);
           await interaction.deferUpdate();
           return;
