@@ -21,15 +21,15 @@ export async function updateMemberCount(client: Client) {
       return;
     }
 
-    const studentRole = guild.roles.cache.get("1454446371221536788");
-    if (!studentRole) {
-      console.error("[ERROR] Student role not found");
-      return;
+    try {
+      const counts = await guild.roles.fetchMemberCounts();
+      const memberCount = counts.get("1454446371221536788");
+
+      await channel.setName(`学生数: ${memberCount}`);
+    } catch (error) {
+      console.error(`[ERROR] fetch memberCount failed: ${error}`);
     }
 
-    const memberCount = studentRole.members.size;
-
-    await channel.setName(`学生数: ${memberCount}`);
     console.log(`[INFO]  Updated member count in ${channel.name}`);
   } catch (error) {
     console.error(`[ERROR] Updating member count: ${error}`);
