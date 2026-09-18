@@ -1,5 +1,6 @@
 import type { Client } from "discord.js";
 
+const CHANNEL_ID = "1454473598973509697";
 const GUILD_ID = "1452263053180534806";
 const MEMBER_ROLE_ID = "1454446371221536788";
 
