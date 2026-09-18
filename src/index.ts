@@ -16,7 +16,7 @@ import { handleVcLeave } from "./handlers/events/vc/leave";
 import { handleVcLogger } from "./handlers/events/vc/logger";
 import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
 import noticeNewRecruit from "./jobs/noticeNewRecruit";
-import { firstJob, updateMemberCount } from "./jobs/updateMemberCount";
+import { updateMemberCount } from "./jobs/updateMemberCount";
 import type { Action, Actions } from "./types/action";
 import type { ButtonCommand, Command, ModalCommand } from "./types/command";
 import { loadActions, loadCommands } from "./utils/loader";
@@ -63,7 +63,15 @@ async function runSafely(label: string, task: () => Promise<void>) {
   }
 }
 
+<<<<<<< HEAD
 async function addRoleSafely(member: GuildMember, roleId: string, label: string) {
+=======
+async function addRoleSafely(
+  member: GuildMember,
+  roleId: string,
+  label: string,
+) {
+>>>>>>> 3b65a01 (chore: remove firstJob in updateMemberCount)
   try {
     await member.roles.add(roleId);
   } catch (error) {
@@ -90,8 +98,14 @@ client.once("clientReady", async () => {
   console.log("Bot is ready!");
   console.log("");
 
+<<<<<<< HEAD
   await runSafely("Initial member fetch", () => firstJob(client));
   await runSafely("Initial member count update", () => updateMemberCount(client));
+=======
+  await runSafely("Initial member count update", () =>
+    updateMemberCount(client),
+  );
+>>>>>>> 3b65a01 (chore: remove firstJob in updateMemberCount)
 
   await runSafely("Reaction role message check", async () => {
     const result = await checkReactionRoleMessage(client);
@@ -151,7 +165,15 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
       let command: ButtonCommand;
       try {
         const parsed = JSON.parse(customId);
+<<<<<<< HEAD
         if (typeof parsed !== "object" || parsed === null || typeof parsed.action !== "string") {
+=======
+        if (
+          typeof parsed !== "object" ||
+          parsed === null ||
+          typeof parsed.action !== "string"
+        ) {
+>>>>>>> 3b65a01 (chore: remove firstJob in updateMemberCount)
           console.error(`Invalid button customId format: ${customId}`);
           await interaction.deferUpdate();
           return;
@@ -163,7 +185,12 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
         return;
       }
       const actionName = command.action;
+<<<<<<< HEAD
       const action: Action<ButtonInteraction> | undefined = actions.button[actionName];
+=======
+      const action: Action<ButtonInteraction> | undefined =
+        actions.button[actionName];
+>>>>>>> 3b65a01 (chore: remove firstJob in updateMemberCount)
       if (!action) {
         console.error(`Action ${actionName} not found`);
         await interaction.followUp("This action does not exist!");
@@ -184,19 +211,44 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
       let command: ModalCommand;
       try {
         const parsed = JSON.parse(customId);
+<<<<<<< HEAD
         if (typeof parsed !== "object" || parsed === null || typeof parsed.action !== "string") {
           console.error(`Invalid modal customId format: ${customId}`);
           await interaction.reply({ content: "invalid request", ephemeral: true });
+=======
+        if (
+          typeof parsed !== "object" ||
+          parsed === null ||
+          typeof parsed.action !== "string"
+        ) {
+          console.error(`Invalid modal customId format: ${customId}`);
+          await interaction.reply({
+            content: "invalid request",
+            ephemeral: true,
+          });
+>>>>>>> 3b65a01 (chore: remove firstJob in updateMemberCount)
           return;
         }
         command = parsed as ModalCommand;
       } catch {
         console.error(`Failed to parse modal customId: ${customId}`);
+<<<<<<< HEAD
         await interaction.reply({ content: "invalid request", ephemeral: true });
         return;
       }
       const actionName = command.action;
       const action: Action<ModalSubmitInteraction> | undefined = actions.modal[actionName];
+=======
+        await interaction.reply({
+          content: "invalid request",
+          ephemeral: true,
+        });
+        return;
+      }
+      const actionName = command.action;
+      const action: Action<ModalSubmitInteraction> | undefined =
+        actions.modal[actionName];
+>>>>>>> 3b65a01 (chore: remove firstJob in updateMemberCount)
       if (!action) {
         console.error(`Action ${actionName} not found`);
         await interaction.followUp("This action does not exist!");
@@ -211,7 +263,15 @@ client.on("interactionCreate", async (interaction: Interaction<CacheType>) => {
       return;
     }
   } catch (error) {
+<<<<<<< HEAD
     await logAndSendError(interaction, "There was an error while executing this interaction!", error);
+=======
+    await logAndSendError(
+      interaction,
+      "There was an error while executing this interaction!",
+      error,
+    );
+>>>>>>> 3b65a01 (chore: remove firstJob in updateMemberCount)
   }
 });
 
@@ -243,13 +303,20 @@ client.on("guildMemberRemove", async (member) => {
 client.on("threadCreate", async (thread, newlyCreated) => {
   if (thread.parentId === "1454093291325886658") {
     console.log("[noticeNewRecruit] Detect new Recruit");
+<<<<<<< HEAD
     await runSafely("Notice new recruit thread", () => noticeNewRecruit(client, thread));
+=======
+    await runSafely("Notice new recruit thread", () =>
+      noticeNewRecruit(client, thread),
+    );
+>>>>>>> 3b65a01 (chore: remove firstJob in updateMemberCount)
   }
 });
 
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   console.log("[INFO]  Detect guildMemberUpdate");
   console.log("-> NEW MEMBER");
+<<<<<<< HEAD
   console.log(`   -> hasStudentRole: ${newMember.roles.cache.has("1454446371221536788")}`);
   console.log("-> OLD MEMBER");
   console.log(`   -> hasStudentRole: ${oldMember.roles.cache.has("1454446371221536788")}`);
@@ -258,6 +325,22 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   if (
     (!oldMember.roles.cache.has("1454446371221536788") && newMember.roles.cache.has("1454446371221536788")) ||
     (oldMember.roles.cache.has("1454446371221536788") && !newMember.roles.cache.has("1454446371221536788"))
+=======
+  console.log(
+    `   -> hasStudentRole: ${newMember.roles.cache.has("1454446371221536788")}`,
+  );
+  console.log("-> OLD MEMBER");
+  console.log(
+    `   -> hasStudentRole: ${oldMember.roles.cache.has("1454446371221536788")}`,
+  );
+
+  //　学生ロールの付与、剥奪を検知して学生数カウントを更新
+  if (
+    (!oldMember.roles.cache.has("1454446371221536788") &&
+      newMember.roles.cache.has("1454446371221536788")) ||
+    (oldMember.roles.cache.has("1454446371221536788") &&
+      !newMember.roles.cache.has("1454446371221536788"))
+>>>>>>> 3b65a01 (chore: remove firstJob in updateMemberCount)
   ) {
     await updateMemberCount(client);
   }
