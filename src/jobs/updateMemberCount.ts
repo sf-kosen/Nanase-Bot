@@ -38,3 +38,12 @@ export async function updateMemberCount(client: Client) {
     console.error(`[ERROR] Updating member count: ${error}`);
   }
 }
+
+export async function firstJob(client: Client) {
+  console.log("[INFO] Starting first job...");
+
+  const guild = await client.guilds.fetch(GUILD_ID);
+  await guild.members.fetch();
+
+  console.log("[INFO] First job completed");
+}

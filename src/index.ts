@@ -16,7 +16,7 @@ import { handleVcLeave } from "./handlers/events/vc/leave";
 import { handleVcLogger } from "./handlers/events/vc/logger";
 import checkReactionRoleMessage from "./jobs/checkReactionRoleMessage";
 import noticeNewRecruit from "./jobs/noticeNewRecruit";
-import { updateMemberCount } from "./jobs/updateMemberCount";
+import { firstJob, updateMemberCount } from "./jobs/updateMemberCount";
 import type { Action, Actions } from "./types/action";
 import type { ButtonCommand, Command, ModalCommand } from "./types/command";
 import { loadActions, loadCommands } from "./utils/loader";
@@ -91,6 +91,7 @@ client.once("clientReady", async () => {
   console.log("");
 
   await runSafely("Initial member count update", () => updateMemberCount(client));
+  await runSafely("Client member cache create", () => firstJob(client));
 
   await runSafely("Reaction role message check", async () => {
     const result = await checkReactionRoleMessage(client);
