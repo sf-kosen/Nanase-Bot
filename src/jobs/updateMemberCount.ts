@@ -21,14 +21,16 @@ export async function updateMemberCount(client: Client) {
       return;
     }
 
-    try {
-      const counts = await guild.roles.fetchMemberCounts();
-      const memberCount = counts.get("1454446371221536788");
+    const counts = await guild.roles.fetchMemberCounts();
 
-      await channel.setName(`学生数: ${memberCount}`);
-    } catch (error) {
-      console.error(`[ERROR] fetch memberCount failed: ${error}`);
+    const memberCount = counts.get("1454446371221536788");
+
+    if (memberCount === undefined) {
+      console.error("[ERROR] fetch memberCount failed");
+      return;
     }
+
+    await channel.setName(`学生数: ${memberCount}`);
 
     console.log(`[INFO]  Updated member count in ${channel.name}`);
   } catch (error) {
