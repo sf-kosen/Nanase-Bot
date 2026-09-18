@@ -23,7 +23,7 @@ export async function updateMemberCount(client: Client) {
 
     const roleMemberCounts = await guild.roles.fetchMemberCounts();
 
-    const memberCount = roleMemberCounts.get("1454446371221536788");
+    const memberCount = roleMemberCounts.get(MEMBER_ROLE_ID);
 
     if (memberCount === undefined) {
       console.error("[ERROR] Student role count not found");
