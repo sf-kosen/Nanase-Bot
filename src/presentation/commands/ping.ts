@@ -1,6 +1,6 @@
 import { type CommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
-import botConfig from "../../bot.config";
-import type { Command } from "../types/command";
+import botConfig from "../../config/botConfig";
+import type { Command } from "../../types/command";
 
 export default {
   data: {
@@ -14,6 +14,5 @@ export default {
       .setDescription(`WebSocket Ping: ${interaction.client.ws.ping}ms`)
       .setColor(0x00ff00);
     await interaction.followUp({ embeds: [embed], allowedMentions: { roles: [botConfig.role.moderatorId] } });
-    return;
   },
 } as Command;

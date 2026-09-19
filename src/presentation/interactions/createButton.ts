@@ -1,5 +1,5 @@
 import { ButtonBuilder, ButtonStyle } from "discord.js";
-import type { ButtonCommand } from "../types/command";
+import type { ButtonCommand } from "../../types/command";
 
 type Props = {
   label: string;
@@ -7,11 +7,11 @@ type Props = {
   style?: ButtonStyle;
 };
 
-const createButton = (props: Props) => {
+function createButton(props: Props): ButtonBuilder {
   return new ButtonBuilder()
     .setLabel(props.label)
     .setCustomId(JSON.stringify(props.customId))
     .setStyle(props.style ?? ButtonStyle.Primary);
-};
+}
 
 export { createButton };

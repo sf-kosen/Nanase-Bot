@@ -30,4 +30,4 @@ COPY --from=builder /app/build ./build
 
 USER node
 
-CMD ["node", "./build/src/index.js"]
+CMD ["node", "./build/index.js"]

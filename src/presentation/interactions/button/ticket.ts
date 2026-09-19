@@ -1,6 +1,3 @@
-/**
- * Ticket button interaction handler
- */
 import {
   type ButtonInteraction,
   ChannelType,
@@ -10,9 +7,11 @@ import {
   type OverwriteResolvable,
   PermissionFlagsBits,
 } from "discord.js";
-import type { Action } from "../../types/action";
+import { ticketChannelName } from "../../../domain/ticket/ticketPolicy";
+import { logger } from "../../../infrastructure/logger";
+import type { Action } from "../../../types/action";
 
-function createErrorEmbed(description: string) {
+function errorEmbed(description: string): EmbedBuilder {
   return new EmbedBuilder().setTitle("エラー").setDescription(description).setColor(Colors.Red);
 }
 
@@ -28,10 +27,7 @@ export default {
     const targetUser = interaction.user;
 
     if (!guild) {
-      await interaction.followUp({
-        embeds: [createErrorEmbed("サーバー情報を取得できませんでした。")],
-        ephemeral: true,
-      });
+      await interaction.followUp({ embeds: [errorEmbed("サーバー情報を取得できませんでした。")], ephemeral: true });
       return;
     }
 
@@ -47,32 +43,29 @@ export default {
             : undefined;
     } catch {
       await interaction.followUp({
-        embeds: [createErrorEmbed("ボタンの情報を正しく読み取れませんでした。")],
+        embeds: [errorEmbed("ボタンの情報を正しく読み取れませんでした。")],
         ephemeral: true,
       });
       return;
     }
 
     if (typeof categoryId !== "string" || categoryId.length === 0) {
-      await interaction.followUp({
-        embeds: [createErrorEmbed("カテゴリー情報が不正です。")],
-        ephemeral: true,
-      });
+      await interaction.followUp({ embeds: [errorEmbed("カテゴリー情報が不正です。")], ephemeral: true });
       return;
     }
 
     const category = guild.channels.cache.get(categoryId);
     if (!category || category.type !== ChannelType.GuildCategory) {
       await interaction.followUp({
-        embeds: [createErrorEmbed("指定されたカテゴリーが見つからないか、カテゴリーではありません。")],
+        embeds: [errorEmbed("指定されたカテゴリーが見つからないか、カテゴリーではありません。")],
         ephemeral: true,
       });
       return;
     }
 
-    const ticketChannelName = `ticket-${targetUser.id}`;
+    const channelName = ticketChannelName(targetUser.id);
     const existingTicket = guild.channels.cache.find(
-      (channel) => channel.parentId === category.id && channel.name === ticketChannelName,
+      (channel) => channel.parentId === category.id && channel.name === channelName,
     );
 
     if (existingTicket) {
@@ -80,7 +73,6 @@ export default {
         .setTitle("既存のチケットがあります")
         .setDescription(`すでにチケットチャンネル ${existingTicket} があります。`)
         .setColor(Colors.Yellow);
-
       await interaction.followUp({ embeds: [embed], ephemeral: true });
       return;
     }
@@ -114,7 +106,7 @@ export default {
       }
 
       const ticketChannel = await guild.channels.create({
-        name: ticketChannelName,
+        name: channelName,
         type: ChannelType.GuildText,
         parent: category.id,
         permissionOverwrites,
@@ -126,9 +118,9 @@ export default {
         .setColor(Colors.Green);
       await interaction.followUp({ embeds: [embed], ephemeral: true });
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       await interaction.followUp({
-        embeds: [createErrorEmbed("チケットチャンネルの作成中にエラーが発生しました。")],
+        embeds: [errorEmbed("チケットチャンネルの作成中にエラーが発生しました。")],
         ephemeral: true,
       });
     }
