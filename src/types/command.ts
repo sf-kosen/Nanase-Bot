@@ -6,6 +6,7 @@ interface Command {
     description: string; // コマンドの説明（自由。長すぎずシンプルに）
     flags: number; // レスポンスのフラグ。荒らし防止のためEphemeral推奨
     defer?: boolean; // コマンド実行時にdeferを行うかどうか。処理に時間がかかる場合はtrue推奨
+    default_member_permissions?: string; // コマンド実行に必要な権限(ビットフラグ文字列)
     options?: Array<{
       // コマンドのオプション（引数）。不要なら省略可
       name: string;
