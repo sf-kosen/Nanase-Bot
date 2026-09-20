@@ -1,7 +1,7 @@
 import type { VoiceState } from "discord.js";
 import { log, LoggerType } from "../../infrastructure/logger";
 
-function logVoiceStateChange(oldState: VoiceState, newState: VoiceState): void {
+export function logVoiceStateChange(oldState: VoiceState, newState: VoiceState): void {
   const username = newState.member?.user.username;
 
   if (oldState.channel && newState.channel) {
@@ -16,5 +16,3 @@ function logVoiceStateChange(oldState: VoiceState, newState: VoiceState): void {
     log(LoggerType.INFO, `${username} joined ${newState.channel.name}`);
   }
 }
-
-export { logVoiceStateChange };

@@ -3,13 +3,13 @@ import { env } from "../../config/env";
 import { type ReactionRoleKind, resolveReactionRole } from "../../domain/reactionRole/reactionRolePolicy";
 import { log, LoggerType } from "../../infrastructure/logger";
 
-type SyncMode = "add" | "remove";
+export type SyncMode = "add" | "remove";
 
 function roleIdOf(kind: ReactionRoleKind): string | undefined {
   return kind === "notifier" ? env.notifierRoleId : env.vcRoleId;
 }
 
-async function syncReactionRole(member: GuildMember, emoji: string, mode: SyncMode): Promise<void> {
+export async function syncReactionRole(member: GuildMember, emoji: string, mode: SyncMode): Promise<void> {
   const kind = resolveReactionRole(emoji);
   if (!kind) return;
 
@@ -26,5 +26,3 @@ async function syncReactionRole(member: GuildMember, emoji: string, mode: SyncMo
   }
   log(LoggerType.INFO, ` : ${mode}ReactionRole <${kind.toUpperCase()}>`);
 }
-
-export { type SyncMode, syncReactionRole };

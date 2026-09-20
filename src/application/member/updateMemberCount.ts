@@ -3,7 +3,7 @@ import botConfig from "../../config/botConfig";
 import { memberCountLabel, STUDENT_ROLE_ID } from "../../domain/member/memberPolicy";
 import { log, LoggerType } from "../../infrastructure/logger";
 
-async function updateMemberCount(client: Client): Promise<void> {
+export async function updateMemberCount(client: Client): Promise<void> {
   log(LoggerType.INFO, "Updating member count...");
 
   try {
@@ -32,5 +32,3 @@ async function updateMemberCount(client: Client): Promise<void> {
     log(LoggerType.ERROR, `Updating member count: ${error}`);
   }
 }
-
-export { updateMemberCount };

@@ -18,7 +18,7 @@ async function notifyWebhook(message: string): Promise<void> {
   }
 }
 
-async function cleanupVoiceChannel(oldState: VoiceState, _newState: VoiceState): Promise<void> {
+export async function cleanupVoiceChannel(oldState: VoiceState, _newState: VoiceState): Promise<void> {
   const channel = oldState.channel;
   if (!channel) return;
 
@@ -38,5 +38,3 @@ async function cleanupVoiceChannel(oldState: VoiceState, _newState: VoiceState):
     await notifyWebhook(`vc-leave: チャンネル削除に失敗しました: ${String(error)}`);
   }
 }
-
-export { cleanupVoiceChannel };

@@ -15,7 +15,7 @@ async function sendSafely(
   }
 }
 
-async function noticeNewRecruit(client: Client, thread: ThreadChannel): Promise<void> {
+export async function noticeNewRecruit(client: Client, thread: ThreadChannel): Promise<void> {
   const channel = client.channels.cache.get(botConfig.channel.recruitNoticeId);
   if (!channel || !channel.isSendable()) return;
 
@@ -43,5 +43,3 @@ async function noticeNewRecruit(client: Client, thread: ThreadChannel): Promise<
     await sendSafely(channel, { embeds: [embed] }, "channel error notice");
   }
 }
-
-export { noticeNewRecruit };
