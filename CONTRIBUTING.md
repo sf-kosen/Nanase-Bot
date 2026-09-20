@@ -10,6 +10,11 @@ Nanase-Bot に興味を持っていただきありがとうございます。
 > [!NOTE]
 > 本ドキュメントは [VOICEVOX の貢献者ガイドライン](https://github.com/VOICEVOX/voicevox/blob/main/CONTRIBUTING.md) を参考に作成しています。
 
+## AI使用について
+AI使用については、[こちら](./LLM-USAGE-POLICY.md)に記述しています。
+
+こちらを参照してください。
+
 ## 担当
 
 |:役割|:担当|
