@@ -39,7 +39,7 @@ async function handleReaction(
   }
 }
 
-function registerEvents(client: Client, deps: RegisterDeps): void {
+export function registerEvents(client: Client, deps: RegisterDeps): void {
   client.once("clientReady", () => handleReady(client, deps.commands));
 
   client.on("interactionCreate", createInteractionRouter(deps.commands, deps.actions));
@@ -70,5 +70,3 @@ function registerEvents(client: Client, deps: RegisterDeps): void {
   client.on("messageReactionAdd", (reaction, user) => handleReaction(reaction, user, "add"));
   client.on("messageReactionRemove", (reaction, user) => handleReaction(reaction, user, "remove"));
 }
-
-export { registerEvents };

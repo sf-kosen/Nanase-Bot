@@ -7,7 +7,7 @@ import { log, LoggerType } from "../../infrastructure/logger";
 import { runSafely } from "../../infrastructure/runSafely";
 import type { Command } from "../../types/command";
 
-async function handleReady(client: Client, commands: Record<string, Command>): Promise<void> {
+export async function handleReady(client: Client, commands: Record<string, Command>): Promise<void> {
   log(LoggerType.INFO, `Logged in as ${client.user?.tag}`);
 
   await runSafely("Registering commands", async () => {
@@ -37,5 +37,3 @@ async function handleReady(client: Client, commands: Record<string, Command>): P
     client.user?.setActivity("with Discord.js", { type: 0 });
   });
 }
-
-export { handleReady };

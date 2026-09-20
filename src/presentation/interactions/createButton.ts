@@ -7,11 +7,9 @@ type Props = {
   style?: ButtonStyle;
 };
 
-function createButton(props: Props): ButtonBuilder {
+export function createButton(props: Props): ButtonBuilder {
   return new ButtonBuilder()
     .setLabel(props.label)
     .setCustomId(JSON.stringify(props.customId))
     .setStyle(props.style ?? ButtonStyle.Primary);
 }
-
-export { createButton };
