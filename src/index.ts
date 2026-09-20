@@ -90,8 +90,8 @@ client.once("clientReady", async () => {
   console.log("Bot is ready!");
   console.log("");
 
-  await runSafely("Initial member fetch", () => firstJob(client));
   await runSafely("Initial member count update", () => updateMemberCount(client));
+  await runSafely("Client member cache create", () => firstJob(client));
 
   await runSafely("Reaction role message check", async () => {
     const result = await checkReactionRoleMessage(client);
