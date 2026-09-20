@@ -1,10 +1,10 @@
 import botConfig from "../../config/botConfig";
 
-function isCustomTrigger(channelId: string): boolean {
+export function isCustomTrigger(channelId: string): boolean {
   return channelId === botConfig.voice.customChannelId;
 }
 
-function shouldDeleteVoiceChannel(params: {
+export function shouldDeleteVoiceChannel(params: {
   parentId: string | null;
   channelId: string;
   memberCount: number;
@@ -16,8 +16,6 @@ function shouldDeleteVoiceChannel(params: {
   return memberCount === 0;
 }
 
-function customVoiceChannelName(username: string): string {
+export function customVoiceChannelName(username: string): string {
   return `🔊｜${username}の部屋`;
 }
-
-export { customVoiceChannelName, isCustomTrigger, shouldDeleteVoiceChannel };

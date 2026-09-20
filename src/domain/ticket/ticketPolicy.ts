@@ -1,10 +1,10 @@
-const TICKET_COOLDOWN_MS = 60_000;
+export const TICKET_COOLDOWN_MS = 60_000;
 
-function ticketChannelName(userId: string): string {
+export function ticketChannelName(userId: string): string {
   return `ticket-${userId}`;
 }
 
-class TicketCooldown {
+export class TicketCooldown {
   private readonly lastUsed = new Map<string, number>();
 
   constructor(private readonly cooldownMs: number = TICKET_COOLDOWN_MS) {}
@@ -22,5 +22,3 @@ class TicketCooldown {
     this.lastUsed.set(userId, now);
   }
 }
-
-export { TICKET_COOLDOWN_MS, TicketCooldown, ticketChannelName };
