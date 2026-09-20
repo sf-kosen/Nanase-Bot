@@ -4,7 +4,7 @@ import type { Action, Actions } from "../../types/action";
 import type { Command } from "../../types/command";
 import { log, LoggerType } from "../logger";
 
-function loadCommands(commandsDir: string, fileType: string): Record<string, Command> {
+export function loadCommands(commandsDir: string, fileType: string): Record<string, Command> {
   log(LoggerType.INFO, "Fetching command...", commandsDir);
 
   const commands: Record<string, Command> = {};
@@ -21,7 +21,7 @@ function loadCommands(commandsDir: string, fileType: string): Record<string, Com
   return commands;
 }
 
-function loadActions(handlersDir: string, fileType: string): Actions {
+export function loadActions(handlersDir: string, fileType: string): Actions {
   log(LoggerType.INFO, "Fetching handlers...", handlersDir);
 
   const actions: Actions = { button: {}, modal: {} };
@@ -46,5 +46,3 @@ function loadActions(handlersDir: string, fileType: string): Actions {
 
   return actions;
 }
-
-export { loadActions, loadCommands };
