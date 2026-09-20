@@ -1,7 +1,21 @@
-const logger = {
-  info: (...args: unknown[]) => console.log(...args),
-  warn: (...args: unknown[]) => console.warn(...args),
-  error: (...args: unknown[]) => console.error(...args),
-};
+const enum LoggerType {
+  INFO,
+  WARN,
+  ERROR,
+}
 
-export { logger };
+export default function log(type: LoggerType, ...args: unknown[]) {
+  switch (type) {
+    case LoggerType.INFO:
+      console.log("[INFO ] ", ...args);
+      break;
+
+    case LoggerType.WARN:
+      console.warn("[WARN ] ", ...args);
+      break;
+
+    case LoggerType.ERROR:
+      console.error("[ERROR]", ...args);
+      break;
+  }
+}
