@@ -1,6 +1,6 @@
 import type { ApplicationCommandOptionType, ChatInputCommandInteraction } from "discord.js";
 
-interface Command {
+export interface Command {
   data: {
     name: string; // コマンド名（英語小文字とハイフンのみだったはず）
     description: string; // コマンドの説明（自由。長すぎずシンプルに）
@@ -34,16 +34,14 @@ interface Command {
   execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
 }
 
-interface ButtonCommand {
+export interface ButtonCommand {
   action: string;
 
   value?: Record<string, any>;
 }
 
-interface ModalCommand {
+export interface ModalCommand {
   action: string;
 
   value?: Record<string, any>;
 }
-
-export type { ButtonCommand, Command, ModalCommand };
