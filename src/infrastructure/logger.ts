@@ -1,10 +1,10 @@
-const enum LoggerType {
+export const enum LoggerType {
   INFO,
   WARN,
   ERROR,
 }
 
-export default function log(type: LoggerType, ...args: unknown[]) {
+export function log(type: LoggerType, ...args: unknown[]) {
   switch (type) {
     case LoggerType.INFO:
       console.log("[INFO ] ", ...args);
