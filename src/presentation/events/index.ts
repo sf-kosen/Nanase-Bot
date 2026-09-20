@@ -9,7 +9,7 @@ import { createCustomVoiceChannel } from "../../application/voice/createCustomVo
 import { logVoiceStateChange } from "../../application/voice/logVoiceStateChange";
 import { isStudentRoleChanged, STUDENT_ROLE_ID } from "../../domain/member/memberPolicy";
 import { isRecruitThread } from "../../domain/recruit/recruitPolicy";
-import { logger } from "../../infrastructure/logger";
+import { log, LoggerType } from "../../infrastructure/logger";
 import { runSafely } from "../../infrastructure/runSafely";
 import type { Actions } from "../../types/action";
 import type { Command } from "../../types/command";
@@ -35,7 +35,7 @@ async function handleReaction(
   try {
     await syncReactionRole(member, reaction.emoji.name, mode);
   } catch (e) {
-    logger.error(e);
+    log(LoggerType.ERROR, e);
   }
 }
 
@@ -54,7 +54,7 @@ function registerEvents(client: Client, deps: RegisterDeps): void {
 
   client.on("threadCreate", async (thread) => {
     if (isRecruitThread(thread.parentId)) {
-      logger.info("[noticeNewRecruit] Detect new Recruit");
+      log(LoggerType.INFO, "[noticeNewRecruit] Detect new Recruit");
       await runSafely("Notice new recruit thread", () => noticeNewRecruit(client, thread));
     }
   });

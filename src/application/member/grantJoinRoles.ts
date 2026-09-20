@@ -1,12 +1,12 @@
 import type { GuildMember } from "discord.js";
 import botConfig from "../../config/botConfig";
-import { logger } from "../../infrastructure/logger";
+import { log, LoggerType } from "../../infrastructure/logger";
 
 async function addRoleSafely(member: GuildMember, roleId: string, label: string): Promise<void> {
   try {
     await member.roles.add(roleId);
   } catch (error) {
-    logger.error(`[ERROR] Failed to add ${label} role (${roleId}):`, error);
+    log(LoggerType.ERROR, `Failed to add ${label} role (${roleId}):`, error);
   }
 }
 

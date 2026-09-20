@@ -1,7 +1,7 @@
 import type { GuildMember } from "discord.js";
 import { env } from "../../config/env";
 import { type ReactionRoleKind, resolveReactionRole } from "../../domain/reactionRole/reactionRolePolicy";
-import { logger } from "../../infrastructure/logger";
+import { log, LoggerType } from "../../infrastructure/logger";
 
 type SyncMode = "add" | "remove";
 
@@ -15,7 +15,7 @@ async function syncReactionRole(member: GuildMember, emoji: string, mode: SyncMo
 
   const roleId = roleIdOf(kind);
   if (!roleId) {
-    logger.error(`${kind === "notifier" ? "NOTIFIER_ROLE_ID" : "VC_ROLE_ID"} is not set`);
+    log(LoggerType.ERROR, `${kind === "notifier" ? "NOTIFIER_ROLE_ID" : "VC_ROLE_ID"} is not set`);
     return;
   }
 
@@ -24,7 +24,7 @@ async function syncReactionRole(member: GuildMember, emoji: string, mode: SyncMo
   } else {
     await member.roles.remove(roleId);
   }
-  logger.info(`[INFO]  : ${mode}ReactionRole <${kind.toUpperCase()}>`);
+  log(LoggerType.INFO, ` : ${mode}ReactionRole <${kind.toUpperCase()}>`);
 }
 
 export { type SyncMode, syncReactionRole };

@@ -11,7 +11,7 @@ import {
 } from "discord.js";
 import botConfig from "../../config/botConfig";
 import { TicketCooldown } from "../../domain/ticket/ticketPolicy";
-import { logger } from "../../infrastructure/logger";
+import { log, LoggerType } from "../../infrastructure/logger";
 import type { Command } from "../../types/command";
 import { createButton } from "../interactions/createButton";
 
@@ -124,7 +124,7 @@ export default {
       cooldown.record(interaction.user.id, Date.now());
       await interaction.followUp({ embeds: [embed], components: [actionRow] });
     } catch (error) {
-      logger.error(error);
+      log(LoggerType.ERROR, error);
       await interaction.followUp({ embeds: [errorEmbed("チケットボードの作成中にエラーが発生しました。")] });
     }
   },

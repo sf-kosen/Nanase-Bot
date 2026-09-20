@@ -1,5 +1,5 @@
 import type { ButtonInteraction, CacheType, Interaction, ModalSubmitInteraction } from "discord.js";
-import { logger } from "../../infrastructure/logger";
+import { log, LoggerType } from "../../infrastructure/logger";
 import type { Action, Actions } from "../../types/action";
 import type { ButtonCommand, Command, ModalCommand } from "../../types/command";
 
@@ -20,7 +20,7 @@ async function sendInteractionError(
   message: string,
   err?: unknown,
 ): Promise<void> {
-  logger.error(err);
+  log(LoggerType.ERROR, err);
   const target = interaction as {
     replied?: boolean;
     deferred?: boolean;
@@ -34,7 +34,7 @@ async function sendInteractionError(
       await target.reply({ content: message, ephemeral: true });
     }
   } catch (e) {
-    logger.error("Failed to send error message to interaction", e);
+    log(LoggerType.ERROR, "Failed to send error message to interaction", e);
   }
 }
 
@@ -44,7 +44,7 @@ function createInteractionRouter(commands: Record<string, Command>, actions: Act
       if (interaction.isCommand()) {
         const command: Command | undefined = commands[interaction.commandName];
         if (!command) {
-          logger.error(`Command ${interaction.commandName} not found`);
+          log(LoggerType.ERROR, `Command ${interaction.commandName} not found`);
           await interaction.followUp("This command does not exist!");
           return;
         }
@@ -52,7 +52,7 @@ function createInteractionRouter(commands: Record<string, Command>, actions: Act
         const flags = command.data.flags || 0;
         if (command.data.defer !== false) await interaction.deferReply({ flags });
 
-        logger.info(`Executing command: ${interaction.commandName}`);
+        log(LoggerType.INFO, `Executing command: ${interaction.commandName}`);
         await command.execute(interaction as never);
         return;
       }
@@ -60,14 +60,14 @@ function createInteractionRouter(commands: Record<string, Command>, actions: Act
       if (interaction.isButton()) {
         const command = parseCustomId(interaction.customId) as ButtonCommand | null;
         if (!command) {
-          logger.error(`Invalid button customId: ${interaction.customId}`);
+          log(LoggerType.ERROR, `Invalid button customId: ${interaction.customId}`);
           await interaction.deferUpdate();
           return;
         }
 
         const action: Action<ButtonInteraction> | undefined = actions.button[command.action];
         if (!action) {
-          logger.error(`Action ${command.action} not found`);
+          log(LoggerType.ERROR, `Action ${command.action} not found`);
           await interaction.followUp("This action does not exist!");
           return;
         }
@@ -75,7 +75,7 @@ function createInteractionRouter(commands: Record<string, Command>, actions: Act
         const flags = action.data.flags || 0;
         if (action.data.defer) await interaction.deferReply({ flags });
 
-        logger.info(`Executing action: ${command.action}`);
+        log(LoggerType.INFO, `Executing action: ${command.action}`);
         await action.execute(interaction);
         return;
       }
@@ -83,14 +83,14 @@ function createInteractionRouter(commands: Record<string, Command>, actions: Act
       if (interaction.isModalSubmit()) {
         const command = parseCustomId(interaction.customId) as ModalCommand | null;
         if (!command) {
-          logger.error(`Invalid modal customId: ${interaction.customId}`);
+          log(LoggerType.ERROR, `Invalid modal customId: ${interaction.customId}`);
           await interaction.reply({ content: "invalid request", ephemeral: true });
           return;
         }
 
         const action: Action<ModalSubmitInteraction> | undefined = actions.modal[command.action];
         if (!action) {
-          logger.error(`Action ${command.action} not found`);
+          log(LoggerType.ERROR, `Action ${command.action} not found`);
           await interaction.followUp("This action does not exist!");
           return;
         }
@@ -98,7 +98,7 @@ function createInteractionRouter(commands: Record<string, Command>, actions: Act
         const flags = action.data.flags || 0;
         if (action.data.defer) await interaction.deferReply({ flags });
 
-        logger.info(`Executing action: ${command.action}`);
+        log(LoggerType.INFO, `Executing action: ${command.action}`);
         await action.execute(interaction);
         return;
       }

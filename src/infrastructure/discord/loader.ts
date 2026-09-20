@@ -2,10 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 import type { Action, Actions } from "../../types/action";
 import type { Command } from "../../types/command";
-import { logger } from "../logger";
+import { log, LoggerType } from "../logger";
 
 function loadCommands(commandsDir: string, fileType: string): Record<string, Command> {
-  logger.info("Fetching command...", commandsDir);
+  log(LoggerType.INFO, "Fetching command...", commandsDir);
 
   const commands: Record<string, Command> = {};
   if (!fs.existsSync(commandsDir)) return commands;
@@ -14,7 +14,7 @@ function loadCommands(commandsDir: string, fileType: string): Record<string, Com
 
   for (const file of commandFiles) {
     const command = require(path.resolve(commandsDir, file)).default as Command;
-    logger.info(`  Load: ${command.data.name}`);
+    log(LoggerType.INFO, `  Load: ${command.data.name}`);
     commands[command.data.name] = command;
   }
 
@@ -22,7 +22,7 @@ function loadCommands(commandsDir: string, fileType: string): Record<string, Com
 }
 
 function loadActions(handlersDir: string, fileType: string): Actions {
-  logger.info("Fetching handlers...", handlersDir);
+  log(LoggerType.INFO, "Fetching handlers...", handlersDir);
 
   const actions: Actions = { button: {}, modal: {} };
   const folders = ["button", "modal"];
@@ -30,16 +30,16 @@ function loadActions(handlersDir: string, fileType: string): Actions {
   for (const folder of folders) {
     const actionDir = path.resolve(handlersDir, folder);
     if (!fs.existsSync(actionDir)) {
-      logger.info(`  Handler Type: ${folder} (none)`);
+      log(LoggerType.INFO, `  Handler Type: ${folder} (none)`);
       continue;
     }
 
     const actionFiles = fs.readdirSync(actionDir).filter((file) => file.endsWith(fileType));
-    logger.info(`  Handler Type: ${folder}`);
+    log(LoggerType.INFO, `  Handler Type: ${folder}`);
 
     for (const file of actionFiles) {
       const action = require(path.resolve(actionDir, file)).default as Action;
-      logger.info(`    Load: ${action.data.action}`);
+      log(LoggerType.INFO, `    Load: ${action.data.action}`);
       actions[folder][action.data.action] = action;
     }
   }

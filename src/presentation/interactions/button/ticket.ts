@@ -8,7 +8,7 @@ import {
   PermissionFlagsBits,
 } from "discord.js";
 import { ticketChannelName } from "../../../domain/ticket/ticketPolicy";
-import { logger } from "../../../infrastructure/logger";
+import { log, LoggerType } from "../../../infrastructure/logger";
 import type { Action } from "../../../types/action";
 
 function errorEmbed(description: string): EmbedBuilder {
@@ -118,7 +118,7 @@ export default {
         .setColor(Colors.Green);
       await interaction.followUp({ embeds: [embed], ephemeral: true });
     } catch (error) {
-      logger.error(error);
+      log(LoggerType.ERROR, error);
       await interaction.followUp({
         embeds: [errorEmbed("チケットチャンネルの作成中にエラーが発生しました。")],
         ephemeral: true,

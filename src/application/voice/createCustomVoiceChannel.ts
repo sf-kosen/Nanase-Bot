@@ -1,7 +1,7 @@
 import { ChannelType, PermissionFlagsBits, type VoiceState } from "discord.js";
 import botConfig from "../../config/botConfig";
 import { customVoiceChannelName, isCustomTrigger } from "../../domain/voice/voicePolicy";
-import { logger } from "../../infrastructure/logger";
+import { log, LoggerType } from "../../infrastructure/logger";
 
 async function createCustomVoiceChannel(_oldState: VoiceState, newState: VoiceState): Promise<void> {
   if (!newState.channel) return;
@@ -49,7 +49,7 @@ async function createCustomVoiceChannel(_oldState: VoiceState, newState: VoiceSt
 
     await newState.member?.voice.setChannel(channel);
   } catch (error) {
-    logger.error("vc-join: チャンネル作成に失敗しました:", error);
+    log(LoggerType.ERROR, "vc-join: チャンネル作成に失敗しました:", error);
   }
 }
 

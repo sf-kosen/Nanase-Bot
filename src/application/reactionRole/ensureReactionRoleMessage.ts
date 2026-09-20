@@ -1,27 +1,27 @@
 import type { Client } from "discord.js";
 import { env } from "../../config/env";
 import { REACTION_ROLE_MESSAGE } from "../../domain/reactionRole/reactionRolePolicy";
-import { logger } from "../../infrastructure/logger";
+import { log, LoggerType } from "../../infrastructure/logger";
 
 async function ensureReactionRoleMessage(client: Client): Promise<string | null> {
   const channelId = env.reactionRoleChannelId;
   const botId = env.botId;
 
   if (!channelId || !botId) {
-    logger.error("REACTIONROLE_CHANNEL_ID or BOT_ID is not set");
+    log(LoggerType.ERROR, "REACTIONROLE_CHANNEL_ID or BOT_ID is not set");
     return null;
   }
 
   const channel = await client.channels.fetch(channelId);
 
   if (!channel || !channel.isTextBased()) {
-    logger.error("Reaction role channel is not a text channel");
+    log(LoggerType.ERROR, "Reaction role channel is not a text channel");
     return null;
   }
 
   if (channel.partial) await channel.fetch();
   if (!("send" in channel)) {
-    logger.error("Reaction role channel can't send messages");
+    log(LoggerType.ERROR, "Reaction role channel can't send messages");
     return null;
   }
 

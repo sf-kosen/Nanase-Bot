@@ -1,6 +1,6 @@
 import { type Client, EmbedBuilder, type ThreadChannel } from "discord.js";
 import botConfig from "../../config/botConfig";
-import { logger } from "../../infrastructure/logger";
+import { log, LoggerType } from "../../infrastructure/logger";
 
 // biome-ignore lint/suspicious/noExplicitAny: discord.js の send() は複数のペイロード型を受け付けるため
 async function sendSafely(
@@ -11,7 +11,7 @@ async function sendSafely(
   try {
     await target.send(payload);
   } catch (error) {
-    logger.error(`[noticeNewRecruit] Failed to send ${label}:`, error);
+    log(LoggerType.ERROR, `[noticeNewRecruit] Failed to send ${label}:`, error);
   }
 }
 
@@ -35,11 +35,11 @@ async function noticeNewRecruit(client: Client, thread: ThreadChannel): Promise<
       .setColor("#52f525");
 
     await sendSafely(channel, { embeds: [embed] }, "recruit notice");
-    logger.info("[noticeNewRecruit] Successfly sent");
+    log(LoggerType.INFO, "[noticeNewRecruit] Successfly sent");
   } catch (error) {
     const embed = new EmbedBuilder().setTitle("エラーが発生しました").setTimestamp().setColor("#ff0000");
     await sendSafely(thread, { embeds: [embed] }, "thread error notice");
-    logger.error(error);
+    log(LoggerType.ERROR, error);
     await sendSafely(channel, { embeds: [embed] }, "channel error notice");
   }
 }

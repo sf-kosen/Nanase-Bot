@@ -1,7 +1,7 @@
 import type { VoiceState } from "discord.js";
 import { env } from "../../config/env";
 import { shouldDeleteVoiceChannel } from "../../domain/voice/voicePolicy";
-import { logger } from "../../infrastructure/logger";
+import { log, LoggerType } from "../../infrastructure/logger";
 
 async function notifyWebhook(message: string): Promise<void> {
   const webhookUrl = env.webhookUrl?.trim();
@@ -14,7 +14,7 @@ async function notifyWebhook(message: string): Promise<void> {
       body: JSON.stringify({ content: message }),
     });
   } catch (webhookError) {
-    logger.error("vc-leave: Webhook送信に失敗しました:", webhookError);
+    log(LoggerType.ERROR, "vc-leave: Webhook送信に失敗しました:", webhookError);
   }
 }
 
@@ -29,12 +29,12 @@ async function cleanupVoiceChannel(oldState: VoiceState, _newState: VoiceState):
   });
   if (!deletable) return;
 
-  logger.info(`Voice channel ${channel.id} is empty. Deleting...`);
+  log(LoggerType.INFO, `Voice channel ${channel.id} is empty. Deleting...`);
 
   try {
     await channel.delete();
   } catch (error) {
-    logger.error("vc-leave: チャンネル削除に失敗しました:", error);
+    log(LoggerType.ERROR, "vc-leave: チャンネル削除に失敗しました:", error);
     await notifyWebhook(`vc-leave: チャンネル削除に失敗しました: ${String(error)}`);
   }
 }
