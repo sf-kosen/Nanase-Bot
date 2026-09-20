@@ -1,4 +1,4 @@
-const botConfig = {
+export const botConfig = {
   guild: {
     id: "1452263053180534806",
   },
@@ -30,5 +30,3 @@ const botConfig = {
     ],
   },
 };
-
-export default botConfig;

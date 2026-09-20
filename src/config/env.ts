@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: ".env" });
 
-const env = {
+export const env = {
   discordToken: process.env.DISCORD_TOKEN,
   botId: process.env.BOT_ID,
   reactionRoleChannelId: process.env.REACTIONROLE_CHANNEL_ID,
@@ -10,5 +10,3 @@ const env = {
   vcRoleId: process.env.VC_ROLE_ID,
   webhookUrl: process.env.WEBHOOK_URL,
 };
-
-export { env };
