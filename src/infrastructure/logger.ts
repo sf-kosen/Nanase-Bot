@@ -1,6 +1,6 @@
 import toISOStringWithTimezone from "../shared/toISOStringWithTimezone";
 
-export const enum LoggerType {
+export enum LoggerType {
   INFO,
   WARN,
   ERROR,
