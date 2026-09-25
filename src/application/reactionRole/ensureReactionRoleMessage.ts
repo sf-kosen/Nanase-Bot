@@ -2,9 +2,10 @@ import type { Client } from "discord.js";
 import { env } from "../../config/env";
 import { REACTION_ROLE_MESSAGE } from "../../domain/reactionRole/reactionRolePolicy";
 import { log, LoggerType } from "../../infrastructure/logger";
+import { botConfig } from "../../config/botConfig";
 
 export default async function ensureReactionRoleMessage(client: Client): Promise<string | null> {
-  const channelId = env.reactionRoleChannelId;
+  const channelId = botConfig.channel.reactionRoleId;
   const botId = env.botId;
 
   if (!channelId || !botId) {

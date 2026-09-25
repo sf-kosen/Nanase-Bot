@@ -1,12 +1,12 @@
 import type { GuildMember } from "discord.js";
-import { env } from "../../config/env";
 import { type ReactionRoleKind, resolveReactionRole } from "../../domain/reactionRole/reactionRolePolicy";
 import { log, LoggerType } from "../../infrastructure/logger";
+import { botConfig } from "../../config/botConfig";
 
 export type SyncMode = "add" | "remove";
 
 function roleIdOf(kind: ReactionRoleKind): string | undefined {
-  return kind === "notifier" ? env.notifierRoleId : env.vcRoleId;
+  return kind === "notifier" ? botConfig.role.notifierId : botConfig.role.vcJoinId;
 }
 
 export default async function syncReactionRole(member: GuildMember, emoji: string, mode: SyncMode): Promise<void> {
