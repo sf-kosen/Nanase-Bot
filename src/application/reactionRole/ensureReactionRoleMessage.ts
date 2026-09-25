@@ -1,14 +1,14 @@
 import type { Client } from "discord.js";
-import { env } from "../../config/env";
 import { REACTION_ROLE_MESSAGE } from "../../domain/reactionRole/reactionRolePolicy";
 import { log, LoggerType } from "../../infrastructure/logger";
 import { botConfig } from "../../config/botConfig";
 
 export default async function ensureReactionRoleMessage(client: Client): Promise<string | null> {
   const channelId = botConfig.channel.reactionRoleId;
-  const botId = env.botId;
 
-  if (!channelId || !botId) {
+  // チャンネルの存在確認
+  // TODO: 既存システムにログを書き換え(REACTIONROLE_CHANNEL_IDはbotConfigに移行され、BOT_IDは削除されました)
+  if (!channelId || !client.user?.id) {
     log(LoggerType.ERROR, "REACTIONROLE_CHANNEL_ID or BOT_ID is not set");
     return null;
   }
@@ -28,7 +28,7 @@ export default async function ensureReactionRoleMessage(client: Client): Promise
 
   const messages = await channel.messages.fetch({ limit: 10 });
   const targetMessage = messages.find(
-    (m) => m.author.id === botId && m.content.includes("リアクションしてロールを付与しよう！"),
+    (m) => m.author.id === client.user?.id && m.content.includes("リアクションしてロールを付与しよう！"),
   );
 
   if (targetMessage) {
