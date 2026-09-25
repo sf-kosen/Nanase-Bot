@@ -3,6 +3,7 @@
 
 // 改変部分
 // - export defaultを追加
+// - 末尾returnの文字列結合を削除
 
 export default function toISOStringWithTimezone(date: Date): string {
   const year = date.getFullYear().toString();
@@ -33,5 +34,5 @@ export default function toISOStringWithTimezone(date: Date): string {
 }
 
 function zeroPadding(s: string): string {
-  return ("0" + s).slice(-2);
+  return `0${s}`.slice(-2);
 }
