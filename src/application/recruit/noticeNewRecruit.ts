@@ -18,7 +18,7 @@ async function sendSafely(
 }
 
 export default async function noticeNewRecruit(client: Client, thread: ThreadChannel): Promise<void> {
-  const channel = client.channels.cache.get(botConfig.channel.recruitNoticeId);
+  const channel = await client.channels.fetch(botConfig.channel.recruitNoticeId);
   if (!channel?.isSendable()) return;
 
   try {

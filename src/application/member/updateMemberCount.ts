@@ -13,7 +13,7 @@ export default async function updateMemberCount(client: Client): Promise<void> {
       return;
     }
 
-    const channel = guild.channels.cache.get(botConfig.channel.memberCountId);
+    const channel = await guild.channels.fetch(botConfig.channel.memberCountId);
     if (!channel?.isTextBased()) {
       log(LoggerType.ERROR, "Channel not found or not a text channel");
       return;
