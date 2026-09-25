@@ -1,13 +1,13 @@
 import type { Client } from "discord.js";
-import { prefetchMembers } from "../../application/member/prefetchMembers";
-import { updateMemberCount } from "../../application/member/updateMemberCount";
-import { ensureReactionRoleMessage } from "../../application/reactionRole/ensureReactionRoleMessage";
+import prefetchMembers from "../../application/member/prefetchMembers";
+import updateMemberCount from "../../application/member/updateMemberCount";
+import ensureReactionRoleMessage from "../../application/reactionRole/ensureReactionRoleMessage";
 import { reactionRoleMessageStore } from "../../application/reactionRole/reactionRoleMessageStore";
 import { log, LoggerType } from "../../infrastructure/logger";
-import { runSafely } from "../../infrastructure/runSafely";
+import runSafely from "../../infrastructure/runSafely";
 import type { Command } from "../../types/command";
 
-export async function handleReady(client: Client, commands: Record<string, Command>): Promise<void> {
+export default async function handleReady(client: Client, commands: Record<string, Command>): Promise<void> {
   log(LoggerType.INFO, `Logged in as ${client.user?.tag}`);
 
   await runSafely("Registering commands", async () => {

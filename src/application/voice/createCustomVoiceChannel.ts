@@ -3,7 +3,7 @@ import { botConfig } from "../../config/botConfig";
 import { customVoiceChannelName, isCustomTrigger } from "../../domain/voice/voicePolicy";
 import { log, LoggerType } from "../../infrastructure/logger";
 
-export async function createCustomVoiceChannel(_oldState: VoiceState, newState: VoiceState): Promise<void> {
+export default async function createCustomVoiceChannel(_oldState: VoiceState, newState: VoiceState): Promise<void> {
   if (!newState.channel) return;
   if (!isCustomTrigger(newState.channel.id)) return;
 

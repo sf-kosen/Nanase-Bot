@@ -18,7 +18,7 @@ async function notifyWebhook(message: string): Promise<void> {
   }
 }
 
-export async function cleanupVoiceChannel(oldState: VoiceState, _newState: VoiceState): Promise<void> {
+export default async function cleanupVoiceChannel(oldState: VoiceState, _newState: VoiceState): Promise<void> {
   const channel = oldState.channel;
   if (!channel) return;
 

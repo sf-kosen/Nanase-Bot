@@ -9,7 +9,7 @@ function roleIdOf(kind: ReactionRoleKind): string | undefined {
   return kind === "notifier" ? env.notifierRoleId : env.vcRoleId;
 }
 
-export async function syncReactionRole(member: GuildMember, emoji: string, mode: SyncMode): Promise<void> {
+export default async function syncReactionRole(member: GuildMember, emoji: string, mode: SyncMode): Promise<void> {
   const kind = resolveReactionRole(emoji);
   if (!kind) return;
 

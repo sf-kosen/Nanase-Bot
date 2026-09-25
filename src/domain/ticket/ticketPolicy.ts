@@ -1,6 +1,6 @@
 export const TICKET_COOLDOWN_MS = 60_000;
 
-export function ticketChannelName(userId: string): string {
+export default function ticketChannelName(userId: string): string {
   return `ticket-${userId}`;
 }
 

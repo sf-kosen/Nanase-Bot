@@ -3,7 +3,7 @@ import { env } from "./config/env";
 import { createClient } from "./infrastructure/discord/client";
 import { loadActions, loadCommands } from "./infrastructure/discord/loader";
 import { log, LoggerType } from "./infrastructure/logger";
-import { registerEvents } from "./presentation/events";
+import registerEvents from "./presentation/events";
 
 // 実行中ファイルの拡張子から、読み込むモジュール種別を決定する。
 // ts-node では .ts、コンパイル後の Node.js では .js になる。

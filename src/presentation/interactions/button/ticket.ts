@@ -7,7 +7,7 @@ import {
   type OverwriteResolvable,
   PermissionFlagsBits,
 } from "discord.js";
-import { ticketChannelName } from "../../../domain/ticket/ticketPolicy";
+import ticketChannelName from "../../../domain/ticket/ticketPolicy";
 import { log, LoggerType } from "../../../infrastructure/logger";
 import type { Action } from "../../../types/action";
 

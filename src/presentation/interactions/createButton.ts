@@ -7,7 +7,7 @@ type Props = {
   style?: ButtonStyle;
 };
 
-export function createButton(props: Props): ButtonBuilder {
+export default function createButton(props: Props): ButtonBuilder {
   return new ButtonBuilder()
     .setLabel(props.label)
     .setCustomId(JSON.stringify(props.customId))

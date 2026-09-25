@@ -1,20 +1,20 @@
 import type { Client, MessageReaction, PartialMessageReaction, PartialUser, User } from "discord.js";
-import { grantJoinRoles } from "../../application/member/grantJoinRoles";
-import { updateMemberCount } from "../../application/member/updateMemberCount";
+import grantJoinRoles from "../../application/member/grantJoinRoles";
+import updateMemberCount from "../../application/member/updateMemberCount";
 import { reactionRoleMessageStore } from "../../application/reactionRole/reactionRoleMessageStore";
-import { syncReactionRole } from "../../application/reactionRole/syncReactionRole";
-import { noticeNewRecruit } from "../../application/recruit/noticeNewRecruit";
-import { cleanupVoiceChannel } from "../../application/voice/cleanupVoiceChannel";
-import { createCustomVoiceChannel } from "../../application/voice/createCustomVoiceChannel";
-import { logVoiceStateChange } from "../../application/voice/logVoiceStateChange";
+import syncReactionRole from "../../application/reactionRole/syncReactionRole";
+import noticeNewRecruit from "../../application/recruit/noticeNewRecruit";
+import cleanupVoiceChannel from "../../application/voice/cleanupVoiceChannel";
+import createCustomVoiceChannel from "../../application/voice/createCustomVoiceChannel";
+import logVoiceStateChange from "../../application/voice/logVoiceStateChange";
 import { isStudentRoleChanged, STUDENT_ROLE_ID } from "../../domain/member/memberPolicy";
-import { isRecruitThread } from "../../domain/recruit/recruitPolicy";
+import isRecruitThread from "../../domain/recruit/recruitPolicy";
 import { log, LoggerType } from "../../infrastructure/logger";
-import { runSafely } from "../../infrastructure/runSafely";
+import runSafely from "../../infrastructure/runSafely";
 import type { Actions } from "../../types/action";
 import type { Command } from "../../types/command";
-import { createInteractionRouter } from "../interactions/router";
-import { handleReady } from "./ready";
+import createInteractionRouter from "../interactions/router";
+import handleReady from "./ready";
 
 type RegisterDeps = {
   commands: Record<string, Command>;
@@ -39,7 +39,7 @@ async function handleReaction(
   }
 }
 
-export function registerEvents(client: Client, deps: RegisterDeps): void {
+export default function registerEvents(client: Client, deps: RegisterDeps): void {
   client.once("clientReady", () => handleReady(client, deps.commands));
 
   client.on("interactionCreate", createInteractionRouter(deps.commands, deps.actions));

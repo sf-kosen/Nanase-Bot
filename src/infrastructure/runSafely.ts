@@ -1,6 +1,6 @@
 import { log, LoggerType } from "./logger";
 
-export async function runSafely(label: string, task: () => Promise<void>): Promise<void> {
+export default async function runSafely(label: string, task: () => Promise<void>): Promise<void> {
   try {
     await task();
   } catch (error) {

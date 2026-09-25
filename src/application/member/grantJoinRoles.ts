@@ -11,7 +11,7 @@ async function addRoleSafely(member: GuildMember, roleId: string, label: string)
 }
 
 // 参加メンバーへ初期ロールを付与する。
-export async function grantJoinRoles(member: GuildMember): Promise<void> {
+export default async function grantJoinRoles(member: GuildMember): Promise<void> {
   if (member.user.bot) {
     await addRoleSafely(member, botConfig.role.botId, "bot");
     await addRoleSafely(member, botConfig.role.botId, "student");

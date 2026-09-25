@@ -38,7 +38,7 @@ async function sendInteractionError(
   }
 }
 
-export function createInteractionRouter(commands: Record<string, Command>, actions: Actions) {
+export default function createInteractionRouter(commands: Record<string, Command>, actions: Actions) {
   return async (interaction: Interaction<CacheType>): Promise<void> => {
     try {
       if (interaction.isCommand()) {

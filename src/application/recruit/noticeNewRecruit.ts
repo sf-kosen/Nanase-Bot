@@ -15,7 +15,7 @@ async function sendSafely(
   }
 }
 
-export async function noticeNewRecruit(client: Client, thread: ThreadChannel): Promise<void> {
+export default async function noticeNewRecruit(client: Client, thread: ThreadChannel): Promise<void> {
   const channel = client.channels.cache.get(botConfig.channel.recruitNoticeId);
   if (!channel?.isSendable()) return;
 

@@ -13,7 +13,7 @@ import { botConfig } from "../../config/botConfig";
 import { TicketCooldown } from "../../domain/ticket/ticketPolicy";
 import { log, LoggerType } from "../../infrastructure/logger";
 import type { Command } from "../../types/command";
-import { createButton } from "../interactions/createButton";
+import createButton from "../interactions/createButton";
 
 const cooldown = new TicketCooldown();
 

@@ -3,7 +3,7 @@ import { env } from "../../config/env";
 import { REACTION_ROLE_MESSAGE } from "../../domain/reactionRole/reactionRolePolicy";
 import { log, LoggerType } from "../../infrastructure/logger";
 
-export async function ensureReactionRoleMessage(client: Client): Promise<string | null> {
+export default async function ensureReactionRoleMessage(client: Client): Promise<string | null> {
   const channelId = env.reactionRoleChannelId;
   const botId = env.botId;
 
