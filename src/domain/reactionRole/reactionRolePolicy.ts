@@ -1,4 +1,4 @@
-type ReactionRoleKind = "notifier" | "vc";
+export type ReactionRoleKind = "notifier" | "vc";
 
 export const EMOJI_ROLE_MAP: Record<string, ReactionRoleKind> = {
   "🔔": "notifier",
