@@ -1,5 +1,5 @@
 import { ChannelType, PermissionFlagsBits, type VoiceState } from "discord.js";
-import botConfig from "../../config/botConfig";
+import { botConfig } from "../../config/botConfig";
 import { customVoiceChannelName, isCustomTrigger } from "../../domain/voice/voicePolicy";
 import { log, LoggerType } from "../../infrastructure/logger";
 

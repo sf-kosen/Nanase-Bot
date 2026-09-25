@@ -9,7 +9,7 @@ import {
   MessageFlags,
   PermissionFlagsBits,
 } from "discord.js";
-import botConfig from "../../config/botConfig";
+import { botConfig } from "../../config/botConfig";
 import { TicketCooldown } from "../../domain/ticket/ticketPolicy";
 import { log, LoggerType } from "../../infrastructure/logger";
 import type { Command } from "../../types/command";

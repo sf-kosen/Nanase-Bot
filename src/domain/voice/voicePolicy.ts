@@ -1,4 +1,4 @@
-import botConfig from "../../config/botConfig";
+import { botConfig } from "../../config/botConfig";
 
 export function isCustomTrigger(channelId: string): boolean {
   return channelId === botConfig.voice.customChannelId;

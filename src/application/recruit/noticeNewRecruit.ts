@@ -1,5 +1,5 @@
 import { type Client, EmbedBuilder, type ThreadChannel } from "discord.js";
-import botConfig from "../../config/botConfig";
+import { botConfig } from "../../config/botConfig";
 import { log, LoggerType } from "../../infrastructure/logger";
 
 // biome-ignore lint/suspicious/noExplicitAny: discord.js の send() は複数のペイロード型を受け付けるため

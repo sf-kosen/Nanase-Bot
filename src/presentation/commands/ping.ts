@@ -1,5 +1,5 @@
 import { type CommandInteraction, EmbedBuilder, MessageFlags } from "discord.js";
-import botConfig from "../../config/botConfig";
+import { botConfig } from "../../config/botConfig";
 import type { Command } from "../../types/command";
 
 export default {

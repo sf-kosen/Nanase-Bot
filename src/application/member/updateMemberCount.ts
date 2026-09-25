@@ -1,5 +1,5 @@
 import type { Client } from "discord.js";
-import botConfig from "../../config/botConfig";
+import { botConfig } from "../../config/botConfig";
 import { memberCountLabel, STUDENT_ROLE_ID } from "../../domain/member/memberPolicy";
 import { log, LoggerType } from "../../infrastructure/logger";
 

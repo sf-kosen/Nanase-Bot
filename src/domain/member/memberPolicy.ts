@@ -1,4 +1,4 @@
-import botConfig from "../../config/botConfig";
+import { botConfig } from "../../config/botConfig";
 
 export const STUDENT_ROLE_ID = botConfig.role.memberId;
 
