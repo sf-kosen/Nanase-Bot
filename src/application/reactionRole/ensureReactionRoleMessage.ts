@@ -14,7 +14,7 @@ export async function ensureReactionRoleMessage(client: Client): Promise<string 
 
   const channel = await client.channels.fetch(channelId);
 
-  if (!channel || !channel.isTextBased()) {
+  if (!channel?.isTextBased()) {
     log(LoggerType.ERROR, "Reaction role channel is not a text channel");
     return null;
   }
