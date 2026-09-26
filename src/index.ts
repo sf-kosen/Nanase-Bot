@@ -227,8 +227,6 @@ client.on("guildMemberAdd", async (member) => {
     // 年に応じたロールを付与(第3期生)
     await addRoleSafely(member, "1504117815333093426", "2026 student");
   }
-  // 年に応じたロールを付与(第3期生)
-  await addRoleSafely(member, "1504117815333093426", "2026 student");
 });
 
 // メンバー数更新
