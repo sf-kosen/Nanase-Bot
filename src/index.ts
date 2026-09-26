@@ -220,9 +220,6 @@ client.on("voiceStateUpdate", handleVcJoin);
 client.on("voiceStateUpdate", handleVcLeave);
 
 client.on("guildMemberAdd", async (member) => {
-  const time = Date.now();
-  const date = new Date(time);
-
   if (member.user.bot) {
     // BOTロールを付与
     await addRoleSafely(member, "1454099602641780737", "bot");
