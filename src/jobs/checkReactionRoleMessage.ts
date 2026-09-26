@@ -9,15 +9,19 @@ const REACTION_ROLE_MESSAGE = [
 ].join("\n");
 
 export default async function checkReactionRoleMessage(client: Client): Promise<string | null> {
+  // dotenv読み込み
   const reactionRoleChannelID = process.env["REACTIONROLE_CHANNEL_ID"];
 
+  // dotenvの存在チェック
   if (!reactionRoleChannelID) {
     console.error("REACTIONROLE_CHANNEL_ID is not set");
     return null;
   }
 
+  // チャンネル取得
   const channel = await client.channels.fetch(reactionRoleChannelID);
 
+  // チャンネル送信確認
   if (channel && channel.isTextBased()) {
     if (channel.partial) {
       await channel.fetch();
@@ -30,10 +34,12 @@ export default async function checkReactionRoleMessage(client: Client): Promise<
 
     const messages = await channel.messages.fetch({ limit: 10 });
 
+    //  メッセージ検索
     const targetMessage = messages.find(
       (m) => m.author.id === client.user?.id && m.content.includes("リアクションしてロールを付与しよう！"),
     );
 
+    // 存在して、異なったらメッセージ更新
     if (targetMessage) {
       if (targetMessage.content !== REACTION_ROLE_MESSAGE) {
         await targetMessage.edit(REACTION_ROLE_MESSAGE);
@@ -41,6 +47,7 @@ export default async function checkReactionRoleMessage(client: Client): Promise<
       return targetMessage.id;
     }
 
+    // 存在しなかったら送信
     const sentMessage = await channel.send(REACTION_ROLE_MESSAGE);
     return sentMessage.id;
   }
