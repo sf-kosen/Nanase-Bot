@@ -220,19 +220,13 @@ client.on("voiceStateUpdate", handleVcJoin);
 client.on("voiceStateUpdate", handleVcLeave);
 
 client.on("guildMemberAdd", async (member) => {
-  const time = Date.now();
-  const date = new Date(time);
-
   if (member.user.bot) {
     // BOTロールを付与
     await addRoleSafely(member, "1454099602641780737", "bot");
-
-    // 学生ロールを付与
-    await addRoleSafely(member, "1454099602641780737", "student");
+  } else {
+    // 年に応じたロールを付与(第3期生)
+    await addRoleSafely(member, "1504117815333093426", "2026 student");
   }
-
-  // 年に応じたロールを付与(第3期生)
-  await addRoleSafely(member, "1504117815333093426", "2026 student");
 });
 
 // メンバー数更新
