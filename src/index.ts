@@ -223,11 +223,10 @@ client.on("guildMemberAdd", async (member) => {
   if (member.user.bot) {
     // BOTロールを付与
     await addRoleSafely(member, "1454099602641780737", "bot");
-
-    // 学生ロールを付与
-    await addRoleSafely(member, "1454099602641780737", "student");
+  } else {
+    // 年に応じたロールを付与(第3期生)
+    await addRoleSafely(member, "1504117815333093426", "2026 student");
   }
-
   // 年に応じたロールを付与(第3期生)
   await addRoleSafely(member, "1504117815333093426", "2026 student");
 });
