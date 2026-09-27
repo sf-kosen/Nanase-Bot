@@ -102,8 +102,9 @@ client.once("clientReady", async () => {
     reactionRoleMessage = result;
   });
 
+  // ステータスメッセージを設定
   await runSafely("Setting bot activity", async () => {
-    client.user?.setActivity("with Discord.js", { type: 0 });
+    client.user?.setActivity("青春真っ只中！", { type: 0 });
   });
 });
 
